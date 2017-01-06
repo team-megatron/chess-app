@@ -11,10 +11,45 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170101193303) do
+ActiveRecord::Schema.define(version: 20170105120355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "games", force: true do |t|
+    t.string   "name"
+    t.integer  "white_player_id"
+    t.integer  "black_player_id"
+    t.string   "result"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "games", ["black_player_id"], name: "index_games_on_black_player_id", using: :btree
+  add_index "games", ["white_player_id"], name: "index_games_on_white_player_id", using: :btree
+
+  create_table "moves", force: true do |t|
+    t.integer  "game_id"
+    t.boolean  "is_black"
+    t.string   "move_string"
+    t.integer  "time_sec_lapse"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "moves", ["game_id"], name: "index_moves_on_game_id", using: :btree
+
+  create_table "pieces", force: true do |t|
+    t.integer  "game_id"
+    t.integer  "type"
+    t.integer  "row"
+    t.integer  "column"
+    t.boolean  "is_black"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "pieces", ["game_id"], name: "index_pieces_on_game_id", using: :btree
 
   create_table "players", force: true do |t|
     t.string   "email",                  default: "", null: false
