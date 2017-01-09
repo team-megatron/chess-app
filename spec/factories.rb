@@ -1,13 +1,18 @@
 FactoryGirl.define do
   factory :piece do
-    
+
   end
+
   factory :move do
-    
+
   end
+
   factory :game do
-    
+    name 'test'
+    white_player_id 1
+    black_player_id 2
   end
+
   factory :user do
     sequence :email do |n|
       "dummyEmail#{n}@gmail.com"
