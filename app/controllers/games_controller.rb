@@ -1,7 +1,7 @@
 class GamesController < ApplicationController
   before_action :authenticate_player!
   def index
-    @games = Game.all
+    @games = Game.all.sort_by{|game| game.id}
   end
 
   def white_player_email(game)
@@ -24,5 +24,17 @@ class GamesController < ApplicationController
     game.black_player.blank?
   end
 
+  def update
+    @game = Game.find(params[:id])
+    @game.update_attributes(game_params)
+    redirect_to root_path
+  end
+
   helper_method :white_player_email, :black_player_email, :isOpen?
+
+  private
+
+  def game_params
+    params.require(:game).permit(:black_player_id)
+  end
 end

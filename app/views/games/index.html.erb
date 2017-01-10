@@ -4,10 +4,17 @@
     <h2><%= game.name %></h2> <br />
     <p>White player: <%= white_player_email(game) %></p>
     <p>Black player: <%= black_player_email(game) %></p>
+    <p>Result: <%= game.result %></p>
     <% if isOpen?(game) %>
-      <button class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#myModal">
-        Join
-      </button>
+      <%= form_for game do |t| %>
+       <%= t.hidden_field :black_player_id, :value=>current_player.id %>
+       <%= t.submit "Join" %>
+      <% end %>
+    <% elsif game.black_player_id == current_player.id %>
+      <%= form_for game do |t| %>
+       <%= t.hidden_field :black_player_id, :value=>nil %>
+       <%= t.submit "Leave" %>
+      <% end %>
     <% end %>
   </div>
   <br />
