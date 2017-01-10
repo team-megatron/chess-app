@@ -1,5 +1,14 @@
 class GamesController < ApplicationController
   before_action :authenticate_player!
+  def new
+    @game = Game.new
+  end
+  
+  def show
+    @game = Game.find_by_id(params[:id])
+    return render_not_found if @game.blank?
+  end
+  
   def index
     @games = Game.all.sort_by{|game| game.id}
   end
