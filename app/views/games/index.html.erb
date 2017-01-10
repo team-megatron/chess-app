@@ -1,1 +1,14 @@
-<h1><%= @games.inspect %></h1>
+<h1>All Games</h1>
+<% @games.each do |game| %>
+  <div class="booyah-box col-xs-10 col-xs-offset-1">
+    <h2><%= game.name %></h2> <br />
+    <p>White player: <%= white_player_name(game) %></p>
+    <p>Black player: <%= black_player_name(game) %></p>
+    <% if isOpen?(game) %>
+      <button class="btn btn-primary btn-lg pull-right" data-toggle="modal" data-target="#myModal">
+        Join
+      </button>
+    <% end %>
+  </div>
+  <br />
+<% end %>
