@@ -13,7 +13,7 @@ FactoryGirl.define do
     black_player_id 2
   end
 
-  factory :user do
+  factory :player do
     sequence :email do |n|
       "dummyEmail#{n}@gmail.com"
     end
