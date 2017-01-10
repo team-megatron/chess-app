@@ -3,12 +3,12 @@ class GamesController < ApplicationController
   def new
     @game = Game.new
   end
-  
+
   def show
     @game = Game.find_by_id(params[:id])
     return render_not_found if @game.blank?
   end
-  
+
   def index
     @games = Game.all.sort_by{|game| game.id}
   end
@@ -41,9 +41,9 @@ class GamesController < ApplicationController
     redirect_to games_path
   end
 
-  helper_method :white_player_email, :black_player_email, :isOpen?
-
   private
+
+  helper_method :white_player_email, :black_player_email, :isOpen?
 
   def game_params
     params.require(:game).permit(:black_player_id)
