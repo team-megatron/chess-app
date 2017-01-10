@@ -1,19 +1,20 @@
 class GamesController < ApplicationController
+  before_action :authenticate_player!
   def index
     @games = Game.all
   end
 
-  def white_player_name(game)
+  def white_player_email(game)
     if game.white_player.present?
-      game.white_player.name
+      game.white_player.email
     else
       nil
     end
   end
 
-  def black_player_name(game)
+  def black_player_email(game)
     if game.black_player.present?
-      game.black_player.name
+      game.black_player.email
     else
       nil
     end
@@ -23,5 +24,5 @@ class GamesController < ApplicationController
     game.black_player.blank?
   end
 
-  helper_method :white_player_name, :black_player_name, :isOpen?
+  helper_method :white_player_email, :black_player_email, :isOpen?
 end
