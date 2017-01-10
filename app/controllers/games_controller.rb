@@ -27,7 +27,9 @@ class GamesController < ApplicationController
   def update
     @game = Game.find(params[:id])
     @game.update_attributes(game_params)
-    redirect_to root_path
+    # shoud redirect to game#show
+    # for now redirect to games#index
+    redirect_to games_path
   end
 
   helper_method :white_player_email, :black_player_email, :isOpen?
