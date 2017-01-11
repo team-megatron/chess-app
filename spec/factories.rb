@@ -1,6 +1,9 @@
 FactoryGirl.define do
   factory :piece do
-
+    game_id 1
+    row 1
+    column 1
+    is_black true
   end
 
   factory :move do
