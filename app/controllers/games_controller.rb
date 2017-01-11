@@ -13,6 +13,18 @@ class GamesController < ApplicationController
     @games = Game.all.sort_by{|game| game.id}
   end
 
+  def update
+    @game = Game.find(params[:id])
+    @game.update_attributes(game_params)
+    # shoud redirect to game#show
+    # for now redirect to games#index
+    redirect_to games_path
+  end
+
+  private
+
+  helper_method :white_player_email, :black_player_email, :isOpen?
+
   def white_player_email(game)
     if game.white_player.present?
       game.white_player.email
@@ -32,18 +44,6 @@ class GamesController < ApplicationController
   def isOpen?(game)
     game.black_player.blank?
   end
-
-  def update
-    @game = Game.find(params[:id])
-    @game.update_attributes(game_params)
-    # shoud redirect to game#show
-    # for now redirect to games#index
-    redirect_to games_path
-  end
-
-  private
-
-  helper_method :white_player_email, :black_player_email, :isOpen?
 
   def game_params
     params.require(:game).permit(:black_player_id)
