@@ -26,8 +26,7 @@ class Piece < ActiveRecord::Base
         steps << col
       end
     end
-  
-    
+
     pieces = self.game.pieces
     pieces.each do |piece|
       steps.each do |step|
@@ -36,7 +35,7 @@ class Piece < ActiveRecord::Base
         end
       end
     end
-    
+
     return false
   end
 
@@ -47,8 +46,27 @@ class Piece < ActiveRecord::Base
   end
 
   def is_obstructed_diagonally?(row_destination, col_destination)
-    steps = {}
-    
+    steps = []
+    column = []
+    ((self.column + 1)...col_destination).each do |col|
+      column << col
+    end
+
+    count = self.row + 1
+    column.each do |column|
+      steps << [count, column]
+      count += 1
+    end
+
+    pieces = self.game.pieces
+    pieces.each do |piece|
+      steps.each do |row, column|
+        if piece.row == row && piece.column == column
+          return true
+        end
+      end
+    end
+    return false
   end
 
 end
