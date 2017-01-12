@@ -6,27 +6,28 @@ module PieceHelper
   end
 
   def is_obstructed_horizontally?(col_destination)
-    #steps array is the location between piece and destination
-    steps = []
+    # Pull in all pieces from same game.
+    pieces = self.game.pieces
+
     #find the spots in between piece and destination
     if self.column < col_destination
       ((self.column + 1)...col_destination).each do |col|
-        steps << col
+        return true if self.row == piece.row && piece.column == step
       end
     else
       ((col_destination + 1)...self.column).each do |col|
-        steps << col
+        return true if self.row == piece.row && piece.column == step
       end
     end
 
-    pieces = self.game.pieces
-    pieces.each do |piece|
-      steps.each do |step|
-        if self.row == piece.row && piece.column == step
-          return true
-        end
-      end
-    end
+    # pieces = self.game.pieces
+    # pieces.each do |piece|
+    #   steps.each do |step|
+    #     if self.row == piece.row && piece.column == step
+    #       return true
+    #     end
+    #   end
+    # end
 
     return false
   end
