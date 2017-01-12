@@ -4,7 +4,7 @@ module PieceHelper
       return false
     end
 
-    # Pull in all pieces from same game.
+    # Pull in all pieces from same game and same row
     pieces = self.game.pieces.where(row: self.row)
 
     # Determine if pieces is moving right or left.
@@ -29,7 +29,7 @@ module PieceHelper
       return false
     end
 
-    # Pull in all game pieces
+    # Pull from db pieces from same game and same column
     pieces = self.game.pieces.where(column: self.column)
 
     # Determine if piece is moving up or down
