@@ -5,12 +5,9 @@ class Piece < ActiveRecord::Base
   belongs_to :game
 
   def is_obstructed?(row_destination, col_destination)
-    if is_moving_horizontal?(row_destination)
-      is_obstructed_horizontally?(col_destination)
-    elsif is_moving_vertical?(col_destination)
-      is_obstructed_vertically?(row_destination)
-    else
-      is_obstructed_diagonally?(row_destination, col_destination)
-    end
+    return true if is_obstructed_horizontally?(row_destination, col_destination)
+    return true if is_obstructed_vertically?(row_destination, col_destination)
+    return true if is_obstructed_diagonally?(row_destination, col_destination)
+    return false
   end
 end

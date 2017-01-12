@@ -1,11 +1,9 @@
 module PieceHelper
-  def is_moving_horizontal?(row_destination)
-    if self.row == row_destination
-      return true
+  def is_obstructed_horizontally?(row_destination, col_destination)
+    if self.row != row_destination
+      return false
     end
-  end
 
-  def is_obstructed_horizontally?(col_destination)
     # Pull in all pieces from same game.
     pieces = self.game.pieces.where(row: self.row)
 
@@ -23,13 +21,11 @@ module PieceHelper
     return false
   end
 
-  def is_moving_vertical?(col_destination)
-    if self.column == col_destination
-      return true
+  def is_obstructed_vertically?(row_destination, col_destination)
+    if self.column != col_destination
+      return false
     end
-  end
 
-  def is_obstructed_vertically?(row_destination)
     # Pull in all game pieces
     pieces = self.game.pieces.where(column: self.column)
 
@@ -47,6 +43,10 @@ module PieceHelper
   end
 
   def is_obstructed_diagonally?(row_destination, col_destination)
+    if self.row == row_destination || self.column == col_destination
+      return false
+    end
+
     steps = []
 
     if self.row < row_destination
