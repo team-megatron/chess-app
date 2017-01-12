@@ -73,14 +73,14 @@ module PieceHelper
     # Check if moving up and left
     elsif self.row < row_destination && self.column > col_destination
       next_row = self.row + 1
-      ((col_destination + 1)...self.column).each do |col|
+      ((col_destination + 1)...self.column).to_a.reverse.each do |col|
         steps << [next_row, col]
         next_row += 1
       end
     # Check if moving down and left
     elsif self.row > row_destination && self.column > col_destination
       next_row = self.row - 1
-      ((col_destination + 1)...self.column).each do |col|
+      ((col_destination + 1)...self.column).to_a.reverse.each do |col|
         steps << [next_row, col]
         next_row -= 1
       end
@@ -88,6 +88,7 @@ module PieceHelper
 
     pieces = self.game.pieces
     pieces.each do |piece|
+      puts steps.inspect
       steps.each do |row, column|
         if piece.row == row && piece.column == column
           return true
