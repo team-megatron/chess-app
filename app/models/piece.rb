@@ -51,11 +51,34 @@ class Piece < ActiveRecord::Base
     ((self.column + 1)...col_destination).each do |col|
       column << col
     end
-
-    count = self.row + 1
-    column.each do |column|
-      steps << [count, column]
-      count += 1
+    # Check if moving up and right
+    if self.row < row_destination && self.column < col_destination
+      next_row = self.row + 1
+      ((self.column + 1)...col_destination).each do |col|
+        steps << [next_row, col]
+        next_row += 1
+      end
+    # Check if moving down and right
+    elsif self.row > row_destination && self.column < col_destination
+      next_row = self.row - 1
+      ((self.column + 1)...col_destination).each do |col|
+        steps << [next_row, col]
+        next_row -= 1
+      end
+    # Check if moving up and left
+    elsif self.row < row_destination && self.column > col_destination
+      next_row = self.row + 1
+      ((col_destination + 1)...self.column).each do |col|
+        steps << [next_row, col]
+        next_row += 1
+      end
+    # Check if moving down and left
+    elsif self.row > row_destination && self.column > col_destination
+      next_row = self.row - 1
+      ((col_destination + 1)...self.column).each do |col|
+        steps << [next_row, col]
+        next_row -= 1
+      end
     end
 
     pieces = self.game.pieces
