@@ -19,7 +19,7 @@ module PieceHelper
     else
       ((col_destination + 1)...self.column).each do |col|
         pieces.each do |piece|
-          return true if self.row == piece.row && piece.column == col
+          return true if piece.column == col
         end
       end
     end
@@ -45,7 +45,7 @@ module PieceHelper
     else
       ((row_destination + 1)...self.row).each do |row|
         pieces.each do |piece|
-          return true if self.column == piece.column && piece.row == row
+          return true if piece.row == row
         end
       end
     end
