@@ -34,23 +34,19 @@ module PieceHelper
   end
 
   def is_obstructed_vertically?(row_destination)
-    steps = []
+    # Pull in all game pieces
+    pieces = self.game.pieces
+
     if self.row < row_destination
       ((self.row + 1)...row_destination).each do |row|
-        steps << row
+        pieces.each do |piece|
+          return true if self.column == piece.column && piece.row == row
+        end
       end
     else
       ((row_destination + 1)...self.row).each do |row|
-        steps << row
-      end
-    end
-
-    #could we pull all the pieces with only that column? because we don't need all the pieces
-    pieces = self.game.pieces
-    pieces.each do |piece|
-      steps.each do |step|
-        if self.column == piece.column && piece.row == step
-          return true
+        pieces.each do |piece|
+          return true if self.column == piece.column && piece.row == row
         end
       end
     end
