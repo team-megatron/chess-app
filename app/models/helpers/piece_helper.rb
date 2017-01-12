@@ -7,13 +7,13 @@ module PieceHelper
 
   def is_obstructed_horizontally?(col_destination)
     # Pull in all pieces from same game.
-    pieces = self.game.pieces
+    pieces = self.game.pieces.where(row: self.row)
 
     #find the spots in between piece and destination
     if self.column < col_destination
       ((self.column + 1)...col_destination).each do |col|
         pieces.each do |piece|
-          return true if self.row == piece.row && piece.column == col
+          return true if piece.column == col
         end
       end
     else
@@ -35,12 +35,11 @@ module PieceHelper
 
   def is_obstructed_vertically?(row_destination)
     # Pull in all game pieces
-    pieces = self.game.pieces
-
+    pieces = self.game.pieces.where(column: self.column)
     if self.row < row_destination
       ((self.row + 1)...row_destination).each do |row|
         pieces.each do |piece|
-          return true if self.column == piece.column && piece.row == row
+          return true if piece.row == row
         end
       end
     else
@@ -88,7 +87,6 @@ module PieceHelper
 
     pieces = self.game.pieces
     pieces.each do |piece|
-      puts steps.inspect
       steps.each do |row, column|
         if piece.row == row && piece.column == column
           return true
