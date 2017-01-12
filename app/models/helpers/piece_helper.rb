@@ -12,22 +12,17 @@ module PieceHelper
     #find the spots in between piece and destination
     if self.column < col_destination
       ((self.column + 1)...col_destination).each do |col|
-        return true if self.row == piece.row && piece.column == step
+        pieces.each do |piece|
+          return true if self.row == piece.row && piece.column == col
+        end
       end
     else
       ((col_destination + 1)...self.column).each do |col|
-        return true if self.row == piece.row && piece.column == step
+        pieces.each do |piece|
+          return true if self.row == piece.row && piece.column == col
+        end
       end
     end
-
-    # pieces = self.game.pieces
-    # pieces.each do |piece|
-    #   steps.each do |step|
-    #     if self.row == piece.row && piece.column == step
-    #       return true
-    #     end
-    #   end
-    # end
 
     return false
   end
