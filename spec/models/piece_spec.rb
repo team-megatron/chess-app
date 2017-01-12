@@ -100,25 +100,6 @@ RSpec.describe Piece, type: :model do
  end
 
   describe "is_obstructed_diagonally?" do
-    it "should return true if move is up and right with obstruction" do
-      game = FactoryGirl.create(:game)
-      moving_piece = FactoryGirl.create(:piece, row: 3, column: 3,  game_id: game.id)
-      obstructing_piece = FactoryGirl.create(:piece, row: 7, column: 7, game_id: game.id)
-
-      expect(moving_piece.is_obstructed_diagonally?(8, 8)).to eq true
-    end
-
-    it "should return false if moving up and right without obstruction" do
-      game = FactoryGirl.create(:game)
-      moving_piece = FactoryGirl.create(:piece, row: 3, column: 3,  game_id: game.id)
-      obstructing_piece = FactoryGirl.create(:piece, row: 7, column: 7, game_id: game.id)
-
-      expect(moving_piece.is_obstructed_diagonally?(5, 5)).to eq false
-    end
-
-  end
-
-  describe "is_obstructed_diagonally?" do
     it "should return true if obstructed moving up and right" do
       game = FactoryGirl.create(:game)
       moving_piece = FactoryGirl.create(:piece, column: 1, game_id: game.id)
@@ -151,8 +132,12 @@ RSpec.describe Piece, type: :model do
       expect(moving_piece.is_obstructed_diagonally?(6,6)).to eq true
     end
 
-    it "should return false if not obstructed" do
+    it "should return false if not obstructed diagonally" do
+      game = FactoryGirl.create(:game)
+      moving_piece = FactoryGirl.create(:piece, column: 8, row: 8, game_id: game.id)
+      obstructing_piece = FactoryGirl.create(:piece, column: 5, row: 4, game_id: game.id)
 
+      expect(moving_piece.is_obstructed_diagonally?(6,6)).to eq false
     end
   end
 end
