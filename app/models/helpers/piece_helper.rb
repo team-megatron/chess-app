@@ -7,10 +7,12 @@ module PieceHelper
     # Pull in all pieces from same game.
     pieces = self.game.pieces.where(row: self.row)
 
-    # Establish which direction piece is moving.
+    # Determine if pieces is moving right or left.
     col_increment = self.column < col_destination ? 1 : -1
     next_column = self.column + col_increment
 
+    # Loop through all columns between start and end position.
+    # Return true if any pieces on the row exist at specified column.
     while (next_column * col_increment) < (col_destination * col_increment)
       pieces.each do |piece|
         return true if piece.column == next_column
@@ -29,6 +31,7 @@ module PieceHelper
     # Pull in all game pieces
     pieces = self.game.pieces.where(column: self.column)
 
+    # Determine if piece is moving up or down
     row_increment = self.row < row_destination ? 1 : -1
     next_row = self.row + row_increment
 
@@ -47,48 +50,23 @@ module PieceHelper
       return false
     end
 
-    steps = []
-
-    if self.row < row_destination
-      next_row = self.row + 1
-      # Check if moving up and right
-      if self.column < col_destination
-        ((self.column + 1)...col_destination).each do |col|
-          steps << [next_row, col]
-          next_row += 1
-        end
-      # Check if moving up and left
-      else # Implied that self.column > col_destination
-        ((col_destination + 1)...self.column).to_a.reverse.each do |col|
-          steps << [next_row, col]
-          next_row += 1
-        end
-      end
-    else # Implied that self.row > row_destination
-      next_row = self.row - 1
-      # Check if moving down and right
-      if self.column < col_destination
-        ((self.column + 1)...col_destination).each do |col|
-          steps << [next_row, col]
-          next_row -= 1
-        end
-      # Check if moving down and left
-      else # Implied that self.column > col_destination
-        ((col_destination + 1)...self.column).to_a.reverse.each do |col|
-          steps << [next_row, col]
-          next_row -= 1
-        end
-      end
-    end
-
     pieces = self.game.pieces
-    pieces.each do |piece|
-      steps.each do |row, column|
-        if piece.row == row && piece.column == column
-          return true
-        end
+
+    # Establish which x and y direction piece is moving
+    row_increment = self.row < row_destination ? 1 : -1
+    col_increment = self.column < col_destination ? 1 : -1
+
+    next_row = self.row + row_increment
+    next_column = self.column + col_increment
+
+    while (next_column * col_increment) < (col_destination * col_increment)
+      pieces.each do |piece|
+        return true if piece.row == next_row && piece.column == next_column
       end
+      next_column += col_increment
+      next_row += row_increment
     end
+
     return false
   end
 end
