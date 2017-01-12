@@ -55,33 +55,36 @@ module PieceHelper
 
   def is_obstructed_diagonally?(row_destination, col_destination)
     steps = []
-    # Check if moving up and right
-    if self.row < row_destination && self.column < col_destination
+
+    if self.row < row_destination
       next_row = self.row + 1
-      ((self.column + 1)...col_destination).each do |col|
-        steps << [next_row, col]
-        next_row += 1
+      # Check if moving up and right
+      if self.column < col_destination
+        ((self.column + 1)...col_destination).each do |col|
+          steps << [next_row, col]
+          next_row += 1
+        end
+      # Check if moving up and left
+      else # Implied that self.column > col_destination
+        ((col_destination + 1)...self.column).to_a.reverse.each do |col|
+          steps << [next_row, col]
+          next_row += 1
+        end
       end
-    # Check if moving down and right
-    elsif self.row > row_destination && self.column < col_destination
+    else # Implied that self.row > row_destination
       next_row = self.row - 1
-      ((self.column + 1)...col_destination).each do |col|
-        steps << [next_row, col]
-        next_row -= 1
-      end
-    # Check if moving up and left
-    elsif self.row < row_destination && self.column > col_destination
-      next_row = self.row + 1
-      ((col_destination + 1)...self.column).to_a.reverse.each do |col|
-        steps << [next_row, col]
-        next_row += 1
-      end
-    # Check if moving down and left
-    elsif self.row > row_destination && self.column > col_destination
-      next_row = self.row - 1
-      ((col_destination + 1)...self.column).to_a.reverse.each do |col|
-        steps << [next_row, col]
-        next_row -= 1
+      # Check if moving down and right
+      if self.column < col_destination
+        ((self.column + 1)...col_destination).each do |col|
+          steps << [next_row, col]
+          next_row -= 1
+        end
+      # Check if moving down and left
+      else # Implied that self.column > col_destination
+        ((col_destination + 1)...self.column).to_a.reverse.each do |col|
+          steps << [next_row, col]
+          next_row -= 1
+        end
       end
     end
 
