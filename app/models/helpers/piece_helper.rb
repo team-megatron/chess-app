@@ -9,19 +9,15 @@ module PieceHelper
     # Pull in all pieces from same game.
     pieces = self.game.pieces.where(row: self.row)
 
-    #find the spots in between piece and destination
-    if self.column < col_destination
-      ((self.column + 1)...col_destination).each do |col|
-        pieces.each do |piece|
-          return true if piece.column == col
-        end
+    # Establish which direction piece is moving.
+    col_increment = self.column < col_destination ? 1 : -1
+    next_column = self.column + col_increment
+
+    while (next_column * col_increment) < (col_destination * col_increment)
+      pieces.each do |piece|
+        return true if piece.column == next_column
       end
-    else
-      ((col_destination + 1)...self.column).each do |col|
-        pieces.each do |piece|
-          return true if piece.column == col
-        end
-      end
+      next_column += col_increment
     end
 
     return false
@@ -36,18 +32,15 @@ module PieceHelper
   def is_obstructed_vertically?(row_destination)
     # Pull in all game pieces
     pieces = self.game.pieces.where(column: self.column)
-    if self.row < row_destination
-      ((self.row + 1)...row_destination).each do |row|
-        pieces.each do |piece|
-          return true if piece.row == row
-        end
+
+    row_increment = self.row < row_destination ? 1 : -1
+    next_row = self.row + row_increment
+
+    while (next_row * row_increment) < (row_destination * row_increment)
+      pieces.each do |piece|
+        return true if piece.row == next_row
       end
-    else
-      ((row_destination + 1)...self.row).each do |row|
-        pieces.each do |piece|
-          return true if piece.row == row
-        end
-      end
+      next_row += row_increment
     end
 
     return false

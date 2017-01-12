@@ -23,10 +23,10 @@ RSpec.describe Piece, type: :model do
     it "should return true if obstructed moving diagonally" do
       game = FactoryGirl.create(:game)
       moving_piece = FactoryGirl.create(:piece, column: 1, game_id: game.id)
-      obstructing_piece = FactoryGirl.create(:piece, column: 2, game_id: game.id)
+      obstructing_piece = FactoryGirl.create(:piece, row: 2, column: 2, game_id: game.id)
 
       # Test horizontal movement
-      expect(moving_piece.is_obstructed?(1, 3)).to eq true
+      expect(moving_piece.is_obstructed?(4, 4)).to eq true
     end
 
     it "should return false if not obstructed" do
@@ -69,7 +69,7 @@ RSpec.describe Piece, type: :model do
       moving_piece = FactoryGirl.create(:piece, column: 8, game_id: game.id)
       obstructing_piece = FactoryGirl.create(:piece, column: 1, game_id: game.id)
 
-      expect(moving_piece.is_obstructed_horizontally?(2)).to eq false
+      expect(moving_piece.is_obstructed_horizontally?(3)).to eq false
     end
  end
 
