@@ -36,6 +36,7 @@ module PieceHelper
       return true
     end
   end
+
   def is_obstructed_vertically?(row_destination)
     steps = []
     if self.row < row_destination
