@@ -20,24 +20,15 @@ module PieceHelper
       return false
     end
 
-    # Pull from db pieces from same game and same column
-    pieces = self.game.pieces.where(column: self.column)
+    incrementing = self.row < row_destination
+    start_row = self.row + (incrementing ? 1 : -1)
+    end_row = row_destination + (incrementing ? -1 : 1)
 
-    # Determine if piece is moving up or down
-    row_increment = self.row < row_destination ? 1 : -1
-    next_row = self.row + row_increment
-
-    # Loop through all rows between start and end position.
-    # Return true if any pieces on the column exist at specified row.
-    # (* row_increment) is done to allow < to always be correct operand.
-    while (next_row * row_increment) < (row_destination * row_increment)
-      pieces.each do |piece|
-        return true if piece.row == next_row
-      end
-      next_row += row_increment
+    if incrementing
+      self.game.pieces.where(column: self.column, row: (start_row..end_row)).exists?
+    else
+      self.game.pieces.where(column: self.column, row: (end_row..start_row)).exists?
     end
-
-    return false
   end
 
   def is_obstructed_diagonally?(row_destination, col_destination)
