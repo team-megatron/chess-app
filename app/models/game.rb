@@ -6,7 +6,7 @@ class Game < ActiveRecord::Base
 
   def populate_game!
     8.times do |n|
-      Pawn.create(game_id: self.id, row: 2, column: n)
+      game.pieces.create(type: 'Pawn', row: 2, column: n)
     end
   end
 end
