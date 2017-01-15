@@ -14,11 +14,23 @@ class GamesController < ApplicationController
   end
 
   def update
+    puts params
     @game = Game.find(params[:id])
     @game.update_attributes(game_params)
     # shoud redirect to game#show
     # for now redirect to games#index
     redirect_to games_path
+  end
+
+  def create
+    @game = Game.create(game_params)
+    if @game.valid?
+      @game.update_attributes(white_player_id: current_player.id)
+      @game.populate_game!
+      redirect_to game_path(@game)
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   private
@@ -46,6 +58,6 @@ class GamesController < ApplicationController
   end
 
   def game_params
-    params.require(:game).permit(:black_player_id)
+    params.require(:game).permit(:name, :white_player_id, :black_player_id)
   end
 end
