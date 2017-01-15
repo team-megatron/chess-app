@@ -1,16 +1,38 @@
 <html>
 
   <head>
-  <meta charset="UTF-8"> 
+  <meta charset="UTF-8">
   <title>Chessboard using Pure CSS and HTML</title>
-  
+
     <style type="text/css">
-    
+
+    .board {
+        width: 750px;
+        height: 770px;
+    }
     .chessboard {
         width: 690px;
         height: 690px;
         margin: 20px;
+        margin-left: 40px;
+        margin-bottom: 0px;
         border: 25px solid #333;
+    }
+    .left {
+      width: 40px;
+      height: 640px;
+      float: left;
+      margin-top: 45px;
+      margin-bottom: 45px;
+    }
+    .bottom {
+      width: 640px;
+      height: 40px;
+      float: top;
+      margin-left: 65px;
+      margin-right: 45px;
+      margin-top: 0px;
+      background-color: blue;
     }
     .black {
         float: left;
@@ -32,86 +54,70 @@
         display: table-cell;
         vertical-align:middle;
     }
-    
+    .row {
+        float: left;
+        width: 40px;
+        height: 80px;
+        background-color: #fff;
+        font-size:30px;
+        text-align:center;
+        display: table-cell;
+        vertical-align:middle;
+        margin-left: 0px;
+        line-height: 80px
+    }
+    .col {
+        float: top;
+        width: 80px;
+        height: 40px;
+        background-color: #fff;
+        font-size:30px;
+        text-align:center;
+        display: table-cell;
+        vertical-align:middle;
+    }
+
     </style>
-  
+
   </head>
 
   <body>
-  
-  <div class="chessboard">
-  <!-- 1st -->
-    <div class="white">&#9820;</div>
-    <div class="black">&#9822;</div>
-    <div class="white">&#9821;</div>
-    <div class="black">&#9819;</div>
-    <div class="white">&#9818;</div>
-    <div class="black">&#9821;</div>
-    <div class="white">&#9822;</div>
-    <div class="black">&#9820;</div>
-    <!-- 2nd -->
-    <div class="black">&#9823;</div>
-    <div class="white">&#9823;</div>
-    <div class="black">&#9823;</div>
-    <div class="white">&#9823;</div>
-    <div class="black">&#9823;</div>
-    <div class="white">&#9823;</div>
-    <div class="black">&#9823;</div>
-    <div class="white">&#9823;</div>
-    <!-- 3th -->
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <!-- 4st -->
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <!-- 5th -->
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <!-- 6th -->
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <div class="black"></div>
-    <div class="white"></div>
-    <!-- 7th -->
-    <div class="white">&#9817;</div>
-    <div class="black">&#9817;</div>
-    <div class="white">&#9817;</div>
-    <div class="black">&#9817;</div>
-    <div class="white">&#9817;</div>
-    <div class="black">&#9817;</div>
-    <div class="white">&#9817;</div>
-    <div class="black">&#9817;</div>
-    <!-- 8th -->
-    <div class="black">&#9814;</div>
-    <div class="white">&#9816;</div>
-    <div class="black">&#9815;</div>
-    <div class="white">&#9813;</div>
-    <div class="black">&#9812;</div>
-    <div class="white">&#9815;</div>
-    <div class="black">&#9816;</div>
-    <div class="white">&#9814;</div>
+  <div class="board">
+    <div class="left">
+      <% for j in 1..8 %>
+        <% row = 9-j %>
+        <%= content_tag(:div, row.to_s, class: 'row')%>
+      <% end %>
+    </div>
+
+    <div class="chessboard">
+      <% pieces = @game.pieces %>
+      <% for j in 1..8 %>
+        <% row = 9-j %>
+        <% for  i in 1..8 %>
+          <% col = i %>
+          <% piece = pieces.where(column: col, row: row) %>
+          <% symbol = '' %>
+          <% unless piece.empty? %>
+            <% if piece[0].is_black? %>
+              <% symbol = @black_symbols[piece[0].type] %>
+            <% else %>
+              <% symbol = @white_symbols[piece[0].type] %>
+            <% end %>
+          <% end %>
+          <%= content_tag(:div, raw(symbol), class: @square_color[(row+col) % 2])%>
+          <%= %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="bottom">
+      <% file = ('a'..'h').to_a %>
+      <% for i in 1..8 %>
+        <% col = i %>
+        <%= content_tag(:div, file[col-1], class: 'col')%>
+      <% end %>
+    </div>
   </div>
 </body>
 </html>

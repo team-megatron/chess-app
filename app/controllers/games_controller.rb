@@ -1,5 +1,6 @@
 class GamesController < ApplicationController
   before_action :authenticate_player!
+
   def new
     @game = Game.new
   end
@@ -7,6 +8,13 @@ class GamesController < ApplicationController
   def show
     @game = Game.find_by_id(params[:id])
     return render_not_found if @game.blank?
+
+    @white_symbols = {'Rook'=> '&#9814;', 'Knight'=>'&#9816;', 'Bishop'=>'&#9815;',
+                    'Queen'=> '&#9813;', 'King'  =>'&#9812;', 'Pawn'  =>'&#9817;'}
+    @black_symbols = {'Rook'=>'&#9820;', 'Knight' =>'&#9822;', 'Bishop'=>'&#9821;',
+                    'Queen'=> '&#9819;', 'King'  =>'&#9818;', 'Pawn'  =>'&#9823;'}
+    @square_color = {0 => 'white'}
+    @square_color.default = 'black'
   end
 
   def index
@@ -14,7 +22,6 @@ class GamesController < ApplicationController
   end
 
   def update
-    puts params
     @game = Game.find(params[:id])
     @game.update_attributes(game_params)
     # shoud redirect to game#show
