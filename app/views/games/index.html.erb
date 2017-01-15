@@ -6,16 +6,26 @@
     <p>Black player: <%= black_player_email(game) %></p>
     <p>Result: <%= game.result %></p>
     <% if isOpen?(game) %>
-      <%= form_for game do |t| %>
-       <%= t.hidden_field :black_player_id, :value=>current_player.id %>
-       <%= t.submit "Join" %>
-      <% end %>
+      <div style="float: left; width: auto;">
+        <%= form_for game do |t| %>
+         <%= t.hidden_field :black_player_id, :value=>current_player.id %>
+         <%= t.submit "Join" %>
+        <% end %>
+      </div>
     <% elsif game.black_player_id == current_player.id %>
-      <%= form_for game do |t| %>
-       <%= t.hidden_field :black_player_id, :value=>nil %>
-       <%= t.submit "Leave" %>
-      <% end %>
+      <div style="float: left; width: auto;">
+        <%= form_for game do |t| %>
+         <%= t.hidden_field :black_player_id, :value=>nil %>
+         <%= t.submit "Leave" %>
+        <% end %>
+      </div>
     <% end %>
+  <% if game.white_player_id == current_player.id ||
+        game.black_player_id == current_player.id %>
+    <div style="float: right; width: auto;">
+      <%= button_to "See game", game_path(game), :class => "button", :method => :get %>
+    </div>
+  <% end %>
   </div>
   <br />
 <% end %>
