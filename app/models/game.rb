@@ -20,7 +20,7 @@ class Game < ActiveRecord::Base
       self.pieces.create(type: 'Knight', row: 8, is_black: true, column: n)
     end
 
-    [3,7].each do |n|
+    [3,6].each do |n|
       self.pieces.create(type: 'Bishop', row: 1, is_black: false, column: n)
       self.pieces.create(type: 'Bishop', row: 8, is_black: true, column: n)
     end
