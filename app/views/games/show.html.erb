@@ -23,11 +23,7 @@
             <% piece = pieces.where(column: col, row: row) %>
             <% symbol = '' %>
             <% unless piece.empty? %>
-              <% if piece[0].is_black? %>
-                <% symbol = select_html_symbol(piece[0].type, 'black') %>
-              <% else %>
-                <% symbol = select_html_symbol(piece[0].type, 'white') %>
-              <% end %>
+              <% symbol = select_html_symbol(piece[0]) %>
             <% end %>
             <%= content_tag(:div, raw(symbol), class: @square_color[(row+col) % 2])%>
             <%= %>
