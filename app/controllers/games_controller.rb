@@ -9,10 +9,6 @@ class GamesController < ApplicationController
     @game = Game.find_by_id(params[:id])
     return render_not_found if @game.blank?
 
-    @white_symbols = {'Rook'=> '&#9814;', 'Knight'=>'&#9816;', 'Bishop'=>'&#9815;',
-                    'Queen'=> '&#9813;', 'King'  =>'&#9812;', 'Pawn'  =>'&#9817;'}
-    @black_symbols = {'Rook'=>'&#9820;', 'Knight' =>'&#9822;', 'Bishop'=>'&#9821;',
-                    'Queen'=> '&#9819;', 'King'  =>'&#9818;', 'Pawn'  =>'&#9823;'}
     @square_color = {0 => 'white'}
     @square_color.default = 'black'
   end
