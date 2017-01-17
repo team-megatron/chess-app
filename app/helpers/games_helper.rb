@@ -11,4 +11,8 @@ module GamesHelper
       return ''
     end
   end
+
+  def square_color(row, col)
+    return ((row + col) % 2 == 0) ? 'white' : 'black'
+  end
 end

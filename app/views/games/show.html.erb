@@ -20,17 +20,15 @@
           <% row = 9-j %>
           <% for col in 1..8 %>
             <% piece = pieces.where(column: col, row: row) %>
-            <%= content_tag(:div, raw(select_html_symbol(piece[0])), class: @square_color[(row+col) % 2])%>
+            <%= content_tag(:div, raw(select_html_symbol(piece[0])), class: square_color(row, col)) %>
             <%= %>
           <% end %>
         <% end %>
       </div>
 
       <div class="bottom">
-        <% file = ('a'..'h').to_a %>
-        <% for i in 1..8 %>
-          <% col = i %>
-          <%= content_tag(:div, file[col-1], class: 'col')%>
+        <% for col in 'a'..'h' %>
+          <%= content_tag(:div, col, class: 'col')%>
         <% end %>
       </div>
     </div>
