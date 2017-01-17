@@ -8,9 +8,6 @@ class GamesController < ApplicationController
   def show
     @game = Game.find_by_id(params[:id])
     return render_not_found if @game.blank?
-
-    @square_color = {0 => 'white'}
-    @square_color.default = 'black'
   end
 
   def index
