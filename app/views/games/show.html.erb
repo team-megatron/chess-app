@@ -15,7 +15,7 @@
 
       <div class="chessboard">
         <% pieces = @game.pieces %>
-        <% a_piece_selected = !pieces.where(isSelected: true).empty? %>
+        <% a_piece_selected = !pieces.where(is_selected: true).empty? %>
         <% for j in 1..8 %>
           <% row = 9-j %>
           <% for col in 1..8 %>
@@ -36,7 +36,7 @@
                 <% if piece.blank? %>
                   <%= content_tag(:div, "", class: square_color(row, col)) %>
                 <% else %>
-                  <%= content_tag(:div, piece.isSelected ? content_tag(:u, raw(select_html_symbol(piece))) : raw(select_html_symbol(piece)), class: square_color(row, col)) %>
+                  <%= content_tag(:div, piece.is_selected ? content_tag(:u, raw(select_html_symbol(piece))) : raw(select_html_symbol(piece)), class: square_color(row, col)) %>
                 <% end %>
               <% end %>
 

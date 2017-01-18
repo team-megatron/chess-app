@@ -3,7 +3,7 @@ class MovesController < ApplicationController
     # TODO: check the move and any piece to be captured.
     # now assume the move is valid and the target square is empty,
     # move the piece and deselect it.
-    pieces_selected = Piece.where(isSelected: true)
+    pieces_selected = Piece.where(is_selected: true)
     if !pieces_selected.empty?
       piece = pieces_selected[0]
 
@@ -20,7 +20,7 @@ class MovesController < ApplicationController
         piece.update_attributes(column: params[:column], row: params[:row])
       end
       # deselect the piece
-      piece.update_attributes(isSelected: false)
+      piece.update_attributes(is_selected: false)
       # refresh the chessboard
       redirect_to game_path(piece.game)
     end
