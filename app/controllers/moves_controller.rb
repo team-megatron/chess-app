@@ -7,16 +7,20 @@ class MovesController < ApplicationController
     if !pieces_selected.empty?
       piece = pieces_selected[0]
 
-      # TODO: improve this simple move recording.
-      move_string = "#{piece.type},"\
-                    "r#{piece.row},c#{piece.column},"\
-                    "r#{params[:row]},c#{params[:column]}"
-      @move = Move.create(game_id: params[:game_id],
-                          is_black: params[:is_black],
-                          move_string: move_string)
-      # update piece position
-      piece.update_attributes(column: params[:column], row: params[:row],
-                              isSelected: false)
+      # update only when the position changes
+      if piece.row != params[:row] && piece.column != params[:column]
+        # TODO: improve this simple move recording.
+        move_string = "#{piece.type},"\
+                      "r#{piece.row},c#{piece.column},"\
+                      "r#{params[:row]},c#{params[:column]}"
+        @move = Move.create(game_id: params[:game_id],
+                            is_black: params[:is_black],
+                            move_string: move_string)
+        # update piece position
+        piece.update_attributes(column: params[:column], row: params[:row])
+      end
+      # deselect the piece
+      piece.update_attributes(isSelected: false)
       # refresh the chessboard
       redirect_to game_path(piece.game)
     end
