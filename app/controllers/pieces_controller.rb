@@ -5,10 +5,10 @@ class PiecesController < ApplicationController
     # else if the same piece has been selected before, deselect it
 
     piece = Piece.find(params[:id])
-    piecesSelected = Piece.where(isSelected: true)
-    if piecesSelected.empty?
+    pieces_selected = Piece.where(isSelected: true)
+    if pieces_selected.empty?
       piece.update_attributes(isSelected: true)
-    elsif piecesSelected[0].id == piece.id
+    elsif pieces_selected[0].id == piece.id
       piece.update_attributes(isSelected: false)
     end
     redirect_to game_path(piece.game)

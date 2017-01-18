@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :players
   root 'static_pages#index'
-  resources :games, :pieces
+  resources :games, :pieces, :moves
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

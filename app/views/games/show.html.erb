@@ -15,17 +15,31 @@
 
       <div class="chessboard">
         <% pieces = @game.pieces %>
+        <% a_piece_selected = !pieces.where(isSelected: true).empty? %>
         <% for j in 1..8 %>
           <% row = 9-j %>
           <% for col in 1..8 %>
             <% pieces2 = pieces.where(column: col, row: row) %>
             <% piece = pieces2[0] %>
-            <% if piece.blank? %>
-              <%= content_tag(:div, "", class: square_color(row, col)) %>
-            <% else %>
-              <%= link_to piece_path(piece) do %>
-                <%= content_tag(:div, piece.isSelected ? content_tag(:u, raw(select_html_symbol(piece))) : raw(select_html_symbol(piece)), class: square_color(row, col)) %>
+
+            <% if !a_piece_selected %>
+              <% if piece.blank? %>
+                <%= content_tag(:div, "", class: square_color(row, col)) %>
+              <% else %>
+                <%= link_to piece_path(piece) do %>
+                  <%= content_tag(:div, raw(select_html_symbol(piece)), class: square_color(row, col)) %>
+                <% end %>
               <% end %>
+            <% else %>
+              <% is_black = (@game.black_player_id == current_player.id) %>
+              <%= link_to moves_path(is_black: is_black, column: col, row: row, game_id: @game.id), method: :post do %>
+                <% if piece.blank? %>
+                  <%= content_tag(:div, "", class: square_color(row, col)) %>
+                <% else %>
+                  <%= content_tag(:div, piece.isSelected ? content_tag(:u, raw(select_html_symbol(piece))) : raw(select_html_symbol(piece)), class: square_color(row, col)) %>
+                <% end %>
+              <% end %>
+
             <% end %>
           <% end %>
         <% end %>
