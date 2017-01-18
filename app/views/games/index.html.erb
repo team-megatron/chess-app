@@ -1,4 +1,9 @@
 <h1>All Games</h1>
+<div style="float: left; width: auto;">
+  <%= link_to 'New game', new_game_path(current_player), class: 'pull-right btn btn-primary btn-xs' %>
+</div>
+<br /> <br />
+
 <% @games.each do |game| %>
   <div class="booyah-box col-xs-10 col-xs-offset-1">
     <h2><%= game.name %></h2> <br />
@@ -6,16 +11,26 @@
     <p>Black player: <%= black_player_email(game) %></p>
     <p>Result: <%= game.result %></p>
     <% if isOpen?(game) %>
-      <%= form_for game do |t| %>
-       <%= t.hidden_field :black_player_id, :value=>current_player.id %>
-       <%= t.submit "Join" %>
-      <% end %>
-    <% elsif game.black_player_id == current_player.id %>
-      <%= form_for game do |t| %>
-       <%= t.hidden_field :black_player_id, :value=>nil %>
-       <%= t.submit "Leave" %>
-      <% end %>
+      <div style="float: left; width: auto;">
+        <%= form_for game do |t| %>
+         <%= t.hidden_field :black_player_id, :value=>current_player.id %>
+         <%= t.submit "Join" %>
+        <% end %>
+      </div>
+    <% elsif game.black_player == current_player %>
+      <div style="float: left; width: auto;">
+        <%= form_for game do |t| %>
+         <%= t.hidden_field :black_player_id, :value=>nil %>
+         <%= t.submit "Leave" %>
+        <% end %>
+      </div>
     <% end %>
+  <% if game.white_player == current_player ||
+        game.black_player == current_player %>
+    <div style="float: right; width: auto;">
+      <%= button_to "See game", game_path(game), :class => "button", :method => :get %>
+    </div>
+  <% end %>
   </div>
   <br />
 <% end %>

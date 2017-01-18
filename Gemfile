@@ -33,6 +33,9 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.0'
   gem "factory_girl_rails", "~> 4.0"
 end
+
+gem 'simple_form'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -44,4 +47,3 @@ end
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
