@@ -12,7 +12,7 @@ class Piece < ActiveRecord::Base
   end
 
   def capture_piece(row_destination, col_destination)
-    capture = Piece.where(row: row_destination, column:col_destination, is_black: !self.is_black, game_id: self.game_id)
+    capture = self.game.pieces.where(row: row_destination, column:col_destination, is_black: !self.is_black)
     if capture.exists?
       capture[0].update_attributes(captured:true)
     end
