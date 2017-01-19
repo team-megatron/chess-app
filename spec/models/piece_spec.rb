@@ -140,4 +140,15 @@ RSpec.describe Piece, type: :model do
       expect(moving_piece.is_obstructed_diagonally?(3,3)).to eq false
     end
   end
+
+  describe "capture_piece" do
+    it "should update captured value" do
+      game = FactoryGirl.create(:game)
+      moving_piece = FactoryGirl.create(:piece, row: 8, column: 8, game_id: game.id)
+      my_piece = FactoryGirl.create(:piece, row: 7, column: 7, is_black:false ,game_id: game.id)
+      moving_piece.capture_piece(7,7)
+      my_piece.reload
+      expect(my_piece.captured).to eq true
+    end
+  end
 end
