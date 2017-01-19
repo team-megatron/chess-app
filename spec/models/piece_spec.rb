@@ -150,5 +150,15 @@ RSpec.describe Piece, type: :model do
       my_piece.reload
       expect(my_piece.captured).to eq true
     end
+
+    it "should return false if target location contains same color piece" do
+      game = FactoryGirl.create(:game)
+      moving_piece = FactoryGirl.create(:piece, game_id: game.id)
+      same_color_piece = FactoryGirl.create(:piece, row: 2, column: 2, game_id: game.id)
+
+      expect(moving_piece.capture_piece(2,2)).to eq false
+
+      same_color_piece.reload
+      expect(same_color_piece.captured).to eq false
   end
 end

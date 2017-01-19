@@ -15,6 +15,8 @@ class Piece < ActiveRecord::Base
     capture = self.game.pieces.where(row: row_destination, column:col_destination, is_black: !self.is_black)
     if capture.exists?
       capture[0].update_attributes(captured:true)
+      return true
     end
+    return false
   end
 end
