@@ -159,6 +159,7 @@ RSpec.describe Piece, type: :model do
       expect(moving_piece.capture_piece(2,2)).to eq false
 
       same_color_piece.reload
-      expect(same_color_piece.captured).to eq false
+      expect(same_color_piece.captured).to eq nil
+    end
   end
 end
