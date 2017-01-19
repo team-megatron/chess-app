@@ -5,7 +5,7 @@ class PiecesController < ApplicationController
     # else if the same piece has been selected before, deselect it
 
     piece = Piece.find(params[:id])
-    pieces_selected = Piece.where(is_selected: true)
+    pieces_selected = Piece.where(is_selected: true, game_id: params[:game_id])
     if pieces_selected.empty?
       piece.update_attributes(is_selected: true)
     elsif pieces_selected[0].id == piece.id
