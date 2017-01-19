@@ -23,8 +23,8 @@
             <% piece = pieces2[0] %>
 
             <% if !a_piece_selected %>
-              <% if piece.blank? %>
-                <%= content_tag(:div, "", class: square_color(row, col)) %>
+              <% if piece.blank? || (piece.is_black && @game.black_player != current_player) || (!piece.is_black && @game.white_player != current_player) %>
+                <%= content_tag(:div, raw(select_html_symbol(piece)), class: square_color(row, col)) %>
               <% else %>
                 <%= link_to piece_path(piece) do %>
                   <%= content_tag(:div, raw(select_html_symbol(piece)), class: square_color(row, col)) %>
