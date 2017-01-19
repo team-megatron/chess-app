@@ -6,6 +6,17 @@ FactoryGirl.define do
     is_black true
   end
 
+  types = [:king, :queen, :rook, :knight, :bishop, :pawn]
+  types.each do |type|
+    factory type do
+      game_id 1
+      row 1
+      column 1
+      is_black true
+      type type.to_s.capitalize
+    end
+  end
+
   factory :move do
 
   end
