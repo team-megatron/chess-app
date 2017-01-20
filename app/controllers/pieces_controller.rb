@@ -18,10 +18,8 @@ class PiecesController < ApplicationController
     # TODO: check the move and any piece to be captured.
     # now assume the move is valid and the target square is empty,
     # move the piece and deselect it.
-    pieces_selected = Piece.where(game_id: params[:game_id], is_selected: true)
-    if !pieces_selected.empty?
-      piece = pieces_selected[0]
-
+    piece = Piece.find(params[:id])
+    if piece
       # update only when the position changes
       if piece.row != params[:row] && piece.column != params[:column]
         # TODO: improve this simple move recording.
