@@ -10,4 +10,11 @@ class Piece < ActiveRecord::Base
     return true if is_obstructed_diagonally?(row_destination, col_destination)
     return false
   end
+
+  # Utilize helper methods to check validity of move, make the move, and record the move.
+  def move_to(row_destination, col_destination)
+    # If all checks pass, record the move, update piece position, and deselect the peice.
+    self.record_move(row_destination, col_destination)
+    self.update_attributes(column: col_destination, row: row_destination, is_selected: false)
+  end
 end

@@ -35,7 +35,7 @@ class GamesController < ApplicationController
 
   private
 
-  helper_method :white_player_email, :black_player_email, :isOpen?
+  helper_method :white_player_email, :black_player_email, :is_open?
 
   def white_player_email(game)
     if game.white_player.present?
@@ -53,7 +53,7 @@ class GamesController < ApplicationController
     end
   end
 
-  def isOpen?(game)
+  def is_open?(game)
     game.black_player.blank?
   end
 

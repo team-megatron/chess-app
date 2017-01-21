@@ -10,7 +10,7 @@
     <p>White player: <%= white_player_email(game) %></p>
     <p>Black player: <%= black_player_email(game) %></p>
     <p>Result: <%= game.result %></p>
-    <% if isOpen?(game) %>
+    <% if is_open?(game) %>
       <div style="float: left; width: auto;">
         <%= form_for game do |t| %>
          <%= t.hidden_field :black_player_id, :value=>current_player.id %>
