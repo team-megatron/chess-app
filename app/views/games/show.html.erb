@@ -36,18 +36,17 @@
               <% end %>
             <% else %>
               <% piece_selected = pieces_selected[0] %>
-              <%= link_to piece_path(id: piece_selected.id, column: col,
-                    row: row, game_id: @game.id), method: :put do %>
-                <% if piece_in_square.blank? %>
-                  <%= content_tag(:div, "", class: square_color(row, col)) %>
-                <% else %>
-                  <%= content_tag(:div,
-                                  piece_in_square.is_selected ?
-                                    content_tag(:u, raw(select_html_symbol(piece_in_square))) :
-                                    raw(select_html_symbol(piece_in_square)),
-                                  class: square_color(row, col)) %>
-                <% end %>
+              <%= link_to piece_path(id: piece_selected.id, column: col, row: row), method: :put do %>
+              <% if piece_in_square.blank? %>
+                <%= content_tag(:div, "", class: square_color(row, col)) %>
+              <% else %>
+                <%= content_tag(:div,
+                                piece_in_square.is_selected ?
+                                content_tag(:u, raw(select_html_symbol(piece_in_square))) :
+                                raw(select_html_symbol(piece_in_square)),
+                                class: square_color(row, col)) %>
               <% end %>
+            <% end %>
 
             <% end %>
           <% end %>
