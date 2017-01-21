@@ -20,9 +20,14 @@ RSpec.describe Knight, type: :model do
       expect(knight.valid_move?(3,2)).to eq true
     end
 
-    it 'should return flase if piece moves any other way' do
+    it 'should return false if piece moves any other way' do
       knight = FactoryGirl.create(:knight)
       expect(knight.valid_move?(3,3)).to eq false
+    end
+
+    it 'should return false if piece is moving in larger 2/1 jumps i.e. 4/2' do
+      knight = FactoryGirl.create(:knight)
+      expect(knight.valid_move?(5,3)).to eq false
     end
   end
 end
