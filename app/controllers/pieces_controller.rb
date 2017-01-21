@@ -19,6 +19,7 @@ class PiecesController < ApplicationController
       current_piece.move_to(params[:row], params[:column])
       redirect_to game_path(current_piece.game)
     else
+      # This will need additional game logic to not switch turns if not a real move.
       redirect_to game_path(current_piece.game)
     end
   end
@@ -30,6 +31,6 @@ class PiecesController < ApplicationController
     end
 
     def is_actual_move?(row_destination, col_destination)
-      current_piece.row != row_destination && current_piece.column != col_destination
+      current_piece.row != row_destination || current_piece.column != col_destination
     end
 end
