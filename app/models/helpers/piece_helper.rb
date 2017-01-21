@@ -59,10 +59,6 @@ module PieceHelper
     return false
   end
 
-  def move_to
-
-  end
-
   def record_move(row_destination, col_destination)
     # TODO: improve this simple move recording.
     # Generate string including piece id, current position and destination position.
