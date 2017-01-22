@@ -20,7 +20,7 @@ RSpec.describe Rook, type: :model do
       game = FactoryGirl.create(:game)
       rook = FactoryGirl.create(:rook, row: 8, column: 8, game_id: game.id)
       
-      expect(rook.valid_move?(5,5)). eq false
+      expect(rook.valid_move?(5,5)).to eq false
     end
   end
 end
