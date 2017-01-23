@@ -4,12 +4,12 @@ RSpec.describe Pawn, type: :model do
   describe 'valid_move?' do
     it 'should return true if white pawn moves up one square' do
       pawn = FactoryGirl.create(:pawn, is_black: false)
-      expect(pawn.valid_move?(2,2)).to eq true
+      expect(pawn.valid_move?(2,1)).to eq true
     end
 
     it 'should return true if black pawn moves down once square' do
       pawn = FactoryGirl.create(:pawn, row: 7, column: 7)
-      expect(pawn.valid_move?(6,6)).to eq true
+      expect(pawn.valid_move?(6,7)).to eq true
     end
 
     it 'should return true if white pawn moves up two squares only on first move' do
