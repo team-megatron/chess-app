@@ -9,9 +9,11 @@ class Pawn < Piece
     if self.row == start_row && self.column == col_destination
       return row_distance == 2 * direction || row_distance == 1 * direction
     elsif row_distance == 1 * direction && col_distance == 1 * direction
-      return self.game.pieces.find_by(row: row_destination, column: col_destination, captured: false)
+      return self.game.pieces.where(row: row_destination, column: col_destination, is_black: !self.is_black).exists?
     elsif self.column == col_destination
       return row_distance == 1 * direction
     end
+
+    return false
   end
 end
