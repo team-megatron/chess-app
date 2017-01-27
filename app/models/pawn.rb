@@ -1,5 +1,7 @@
 class Pawn < Piece
   def valid_move?(row_destination, col_destination)
+    return false if is_obstructed?(row_destination, col_destination)
+
     start_row = self.is_black? ? 7 : 2
     direction = self.is_black ? 1 : -1
 
