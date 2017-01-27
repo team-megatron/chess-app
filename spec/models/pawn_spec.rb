@@ -32,6 +32,16 @@ RSpec.describe Pawn, type: :model do
       expect(pawn.valid_move?(4, 1)).to eq false
     end
 
+    it 'should return false if white pawn move down' do
+      pawn = FactoryGirl.create(:pawn, row: 2, column: 2, is_black: false)
+      expect(pawn.valid_move?(1,2)).to eq false
+    end
+
+    it 'should return false if black pawn moves up' do
+      pawn = FactoryGirl.create(:pawn, row: 7, column: 7)
+      expect(pawn.valid_move?(8,7)).to eq false
+    end
+
     it 'should return true if diagonal move to square with oponent piece' do
       game = FactoryGirl.create(:game)
       pawn = FactoryGirl.create(:pawn, is_black: false, game_id: game.id)
