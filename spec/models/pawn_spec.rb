@@ -42,12 +42,20 @@ RSpec.describe Pawn, type: :model do
       expect(pawn.valid_move?(8,7)).to eq false
     end
 
-    it 'should return true if diagonal move to square with oponent piece' do
+    it 'should return true if diagonal right move to square with opponent piece' do
       game = FactoryGirl.create(:game)
       pawn = FactoryGirl.create(:pawn, is_black: false, game_id: game.id)
       piece = FactoryGirl.create(:queen, row: 2, column: 2, game_id: game.id)
 
       expect(pawn.valid_move?(2,2)).to eq true
+    end
+
+    it 'should return true if diagonal left move to square with opponent piece' do
+      game = FactoryGirl.create(:game)
+      pawn = FactoryGirl.create(:pawn, column: 2, is_black: false, game_id: game.id)
+      piece = FactoryGirl.create(:queen, row: 2, column: 1, game_id: game.id)
+
+      expect(pawn.valid_move?(2,1)).to eq true
     end
 
     it 'should return false if diagonal move to square with same color piece' do
