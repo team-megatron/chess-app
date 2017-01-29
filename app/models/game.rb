@@ -30,4 +30,12 @@ class Game < ActiveRecord::Base
     self.pieces.create(type: 'King', row: 1, is_black: false, column: 5)
     self.pieces.create(type: 'King', row: 8, is_black: true, column: 5)
   end
+
+  # Determine if a player is currently in check.
+  # Expects a boolean value to represent whos turn it currently is
+  # true = black, white = false
+  def player_in_check?(is_black)
+    king = self.pieces.find_by(type: 'King', is_black: is_black)
+
+  end
 end
