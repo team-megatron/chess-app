@@ -70,4 +70,13 @@ module PieceHelper
       end_column: col_destination,
       )
   end
+
+  def capturable?(row_destination, col_destination)
+    return self.game.pieces.active.exists?(row: row_destination, column:col_destination, is_black: !self.is_black)
+  end
+
+  def capture_piece(row_destination, col_destination)
+    piece = self.game.pieces.active.find_by(row: row_destination, column: col_destination, is_black: !self.is_black)
+    piece.update_attribute :captured, true
+  end
 end
