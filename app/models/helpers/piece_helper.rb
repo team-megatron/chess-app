@@ -60,10 +60,14 @@ module PieceHelper
   end
 
   def record_move(row_destination, col_destination)
-    # TODO: improve this simple move recording.
-    # Generate string including piece id, current position and destination position.
-    move_string = "#{self.id}, r#{self.row},c#{self.column},r#{row_destination},c#{col_destination}"
     # Record the game leveraging the relationship of piece->game->moves
-    self.game.moves.create(is_black: self.is_black, move_string: move_string)
+    self.game.moves.create(
+      is_black: self.is_black,
+      piece_id: self.id,
+      start_row: self.row,
+      start_column: self.column,
+      end_row: row_destination,
+      end_column: col_destination,
+      )
   end
 end

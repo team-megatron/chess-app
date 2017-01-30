@@ -140,4 +140,19 @@ RSpec.describe Piece, type: :model do
       expect(moving_piece.is_obstructed_diagonally?(3,3)).to eq false
     end
   end
+
+  describe 'move_to' do
+    it 'should record the move in the moves table' do
+      game = FactoryGirl.create(:game)
+      pawn = FactoryGirl.create(:pawn, game_id: game.id)
+      pawn.move_to(2,1)
+
+      move = game.moves.last
+      expect(move.piece_id).to eq pawn.id
+      expect(move.start_row).to eq 1
+      expect(move.start_column).to eq 1
+      expect(move.end_row).to eq 2
+      expect(move.end_column).to eq 1
+    end
+  end
 end
