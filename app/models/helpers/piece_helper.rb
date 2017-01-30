@@ -72,10 +72,12 @@ module PieceHelper
   end
 
   def capturable?(row_destination, col_destination)
+    # Return true if an opponent piece exists at the specific location
     return self.game.pieces.active.exists?(row: row_destination, column:col_destination, is_black: !self.is_black)
   end
 
   def capture_piece(row_destination, col_destination)
+    # Select opponent piece and set captured field to true
     piece = self.game.pieces.active.find_by(row: row_destination, column: col_destination, is_black: !self.is_black)
     piece.update_attribute :captured, true
   end

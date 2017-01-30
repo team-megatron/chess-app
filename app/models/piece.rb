@@ -14,7 +14,8 @@ class Piece < ActiveRecord::Base
     return false
   end
 
-  # Utilize helper methods to check validity of move, make the move, and record the move.
+  # Utilize helper methods to check validity of move, make and record the move,
+  # and capture if appropriate.
   def move_to(row_destination, col_destination)
     # Capture piece located at target location if exists
     capture_piece(row_destination, col_destination) if capturable?(row_destination, col_destination)
