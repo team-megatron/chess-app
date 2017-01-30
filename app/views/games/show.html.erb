@@ -13,9 +13,7 @@
             <tr id="row-<%= row %>" class="row">
               <td class="coordinate"><%= row %></td>
               <% 1.upto(8).each do |col| %>
-                <% pieces_in_square = pieces.where(column: col, row: row) %>
-                <% piece_in_square = pieces_in_square[0] %>
-
+                <% piece_in_square = pieces.find_by(column: col, row: row) %>
                 <% if piece_in_square.blank? %>
                   <%= content_tag(:td, '', class: square_color(row, col), id: "square-#{row}-#{col}") %>
                 <% else %>
