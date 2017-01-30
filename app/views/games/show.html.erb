@@ -9,11 +9,10 @@
       <div class="col-xs-10">
         <% pieces = @game.pieces %>
         <table class="table chessboard text-center">
-          <% for j in 1..8 %>
-            <% row = 9-j %>
+          <% 8.downto(1).each do |row| %>
             <tr id="row-<%= row %>" class="row">
-              <%= content_tag(:td, row, class: 'coordinate') %>
-              <% for col in 1..8 %>
+              <td class="coordinate"><%= row %></td>
+              <% 1.upto(8).each do |col| %>
                 <% pieces_in_square = pieces.where(column: col, row: row) %>
                 <% piece_in_square = pieces_in_square[0] %>
 
