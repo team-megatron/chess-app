@@ -1,4 +1,7 @@
 class Piece < ActiveRecord::Base
+  scope :active, -> { where captured: false }
+  scope :captured, -> { where captured: true }
+
   require_relative 'helpers/piece_helper'
   include PieceHelper
 
