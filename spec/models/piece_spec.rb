@@ -154,5 +154,35 @@ RSpec.describe Piece, type: :model do
       expect(move.end_row).to eq 2
       expect(move.end_column).to eq 1
     end
+
+    it 'should set opponent piece to captured if capturable' do
+      game = FactoryGirl.create(:game)
+      black = FactoryGirl.create(:pawn, game_id: game.id)
+      white = FactoryGirl.create(:pawn, game_id: game.id, row: 2, column: 2, is_black: false)
+
+      expect(white.captured).to eq false
+
+      black.move_to(2,2)
+      white.reload
+      expect(white.captured).to eq true
+    end
+  end
+
+  describe "capture_piece" do
+    it "should return true target square contains opponet piece" do
+      game = FactoryGirl.create(:game)
+      moving_piece = FactoryGirl.create(:pawn, row: 8, column: 8, game_id: game.id)
+      opponent_piece = FactoryGirl.create(:pawn, row: 7, column: 7, is_black:false ,game_id: game.id)
+
+      expect(moving_piece.capturable?(7,7)).to eq true
+    end
+
+    it "should return false if target location contains same color piece" do
+      game = FactoryGirl.create(:game)
+      moving_piece = FactoryGirl.create(:pawn, game_id: game.id)
+      same_color_piece = FactoryGirl.create(:pawn, row: 2, column: 2, game_id: game.id)
+
+      expect(moving_piece.capturable?(2,2)).to eq false
+    end
   end
 end

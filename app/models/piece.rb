@@ -1,6 +1,6 @@
 class Piece < ActiveRecord::Base
-  scope :active, -> { where captured: false }
-  scope :captured, -> { where captured: true }
+  scope :active, -> { where(captured: false) }
+  scope :captured, -> { where(captured: true) }
 
   require_relative 'helpers/piece_helper'
   include PieceHelper
@@ -16,8 +16,18 @@ class Piece < ActiveRecord::Base
 
   # Utilize helper methods to check validity of move, make the move, and record the move.
   def move_to(row_destination, col_destination)
+    # Capture piece located at target location if exists
+    if capturable?(row_destination, col_destination)
+      piece = self.game.pieces.active.find_by(row: row_destination, column: col_destination, is_black: !self.is_black)
+      piece.update_attribute :captured, true
+    end
     # If all checks pass, record the move, update piece position, and deselect the peice.
     self.record_move(row_destination, col_destination)
     self.update_attributes(column: col_destination, row: row_destination, is_selected: false)
+  end
+
+  def capturable?(row_destination, col_destination)
+    # binding.pry
+    return self.game.pieces.active.exists?(row: row_destination, column:col_destination, is_black: !self.is_black)
   end
 end
