@@ -10,21 +10,22 @@
         <% pieces = @game.pieces %>
         <table class="table chessboard text-center">
           <% for j in 1..8 %>
-            <tr class="row">
-              <% row = 9-j %>
+            <% row = 9-j %>
+            <tr id="row-<%= row %>" class="row">
               <%= content_tag(:td, row, class: 'coordinate') %>
               <% for col in 1..8 %>
                 <% pieces_in_square = pieces.where(column: col, row: row) %>
                 <% piece_in_square = pieces_in_square[0] %>
 
                 <% if piece_in_square.blank? %>
-                  <%= content_tag(:td, '', class: square_color(row, col)) %>
+                  <%= content_tag(:td, '', class: square_color(row, col), id: "square-#{row}-#{col}") %>
                 <% else %>
                   <%=
                     content_tag(
                       :td,
                       content_tag(:div, raw(select_html_symbol(piece_in_square))),
-                      class: square_color(row, col)
+                      class: square_color(row, col),
+                      id: "square-#{row}-#{col}"
                     )
                   %>
                 <% end %>
