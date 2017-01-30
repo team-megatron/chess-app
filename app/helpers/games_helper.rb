@@ -15,4 +15,17 @@ module GamesHelper
   def square_color(row, col)
     return ((row + col) % 2 == 0) ? 'white' : 'black'
   end
+
+  def render_piece_in_square(row, col, piece)
+    content_tag(
+      :td,
+      raw(select_html_symbol(piece)),
+      class: square_color(row, col),
+      id: "square-#{row}-#{col}"
+    )
+  end
+
+  def render_empty_square(row, col)
+    content_tag(:td, '', class: square_color(row, col), id: "square-#{row}-#{col}")
+  end
 end
