@@ -25,7 +25,8 @@
               <%= content_tag(:div, '', class: square_color(row, col)) %>
             <% else %>
               <%= content_tag(:div,
-                              content_tag(:div, raw(select_html_symbol(piece_in_square))),
+                              content_tag(:div, raw(select_html_symbol(piece_in_square)),
+                              piece_color: piece_color(piece_in_square)),
                               class: square_color(row, col)) %>
             <% end %>
           <% end %>
@@ -52,22 +53,26 @@ $(function() {
 
   // handle the action of dropping a piece into a square
   $('.chessboard>div').droppable({
-    // FIXME: This function does not check for valid move or valid capture.
+    // FIXME: This function does not check for valid move.
     //        It does not update database.
     drop: function(event, ui){
       let piece_div = ui.draggable;
       let square_div = $(this);
 
-      // check inside of the square, hide and remove any piece to be captured
+      // remove any piece of different color in the square
       if (square_div.text().length != 0 &&
-          square_div.children().text() != piece_div.text()) {
+          square_div.children().attr('piece_color') != piece_div.attr('piece_color')) {
         square_div.children().hide('slow');
         square_div.empty();
       }
 
-      // reset the selected piece position relative to the square before adding
+      // reset the selected piece position relative to the square
       piece_div.css({left: 0, top: 0});
-      square_div.append(piece_div);
+
+      // only add piece into square if empty
+      if (square_div.text().length == 0) {
+        square_div.append(piece_div);
+      }
     }
   });
 
