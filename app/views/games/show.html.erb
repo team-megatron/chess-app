@@ -59,7 +59,8 @@ $(function() {
       let square_div = $(this);
 
       // check inside of the square, hide and remove any piece to be captured
-      if (square_div.text().length != 0) {
+      if (square_div.text().length != 0 &&
+          square_div.children().text() != piece_div.text()) {
         square_div.children().hide('slow');
         square_div.empty();
       }
