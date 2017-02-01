@@ -14,6 +14,7 @@ FactoryGirl.define do
       column 1
       is_black true
       type type.to_s.capitalize
+      captured false
     end
   end
 
