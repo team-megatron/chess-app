@@ -59,5 +59,13 @@ RSpec.describe Game, type: :model do
 
       expect(game.player_in_check?(king.is_black?)).to eq false
     end
+
+    it "should return false if captured opponent piece can move to king's square" do
+      game = FactoryGirl.create(:game)
+      king = FactoryGirl.create(:king, game_id: game.id)
+      opponent = FactoryGirl.create(:rook, game_id: game.id, row: 2, column: 1, is_black: false, captured: true)
+
+      expect(game.player_in_check?(king.is_black?)).to eq false
+    end
   end
 end
