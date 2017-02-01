@@ -36,7 +36,7 @@ class Game < ActiveRecord::Base
   # true = black, white = false
   def player_in_check?(is_black)
     king = self.pieces.find_by(type: 'King', is_black: is_black)
-    opponent_pieces = self.pieces.where(is_black: !is_black)
+    opponent_pieces = self.pieces.active.where(is_black: !is_black)
     opponent_pieces.each do |piece|
       if piece.valid_move?(king.row, king.column)
         return true
