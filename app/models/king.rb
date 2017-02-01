@@ -14,4 +14,11 @@ class King < Piece
     return false
   end
 
+  def can_castle?()
+
+  end
+
+  def castle(row_destination, col_destination)
+
+  end
 end
