@@ -35,13 +35,22 @@ class Game < ActiveRecord::Base
   # Expects a boolean value to represent whos turn it currently is
   # true = black, white = false
   def player_in_check?(is_black)
+    # Grabs active players king
     king = self.pieces.find_by(type: 'King', is_black: is_black)
+
+    # Grab all opponent pieces
     opponent_pieces = self.pieces.active.where(is_black: !is_black)
+
+    # Loop through each piece and check to see if they can make a
+    # valid move to the active players king (aka check)
     opponent_pieces.each do |piece|
       if piece.valid_move?(king.row, king.column)
         return true
       end
     end
+
+    # Return false if no opponent piece can move to active players
+    # king
     return false
   end
 end
