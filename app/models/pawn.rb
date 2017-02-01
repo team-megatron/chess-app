@@ -1,5 +1,8 @@
 class Pawn < Piece
   def valid_move?(row_destination, col_destination)
+    # check if move to outside chessboard
+    return false if !super
+
     # Check if move destination is obstructed by another piece
     return false if is_obstructed?(row_destination, col_destination)
 
