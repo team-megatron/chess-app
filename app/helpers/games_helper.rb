@@ -13,10 +13,23 @@ module GamesHelper
   end
 
   def square_color(row, col)
-    return ((row + col) % 2 == 0) ? 'white' : 'black'
+    return ((row + col) % 2 == 0) ? 'square white' : 'square black'
   end
 
   def piece_color(piece)
     return piece.is_black? ? 'black' : 'white'
+  end
+
+  def render_piece_in_square(row, col, piece)
+    content_tag(
+      :td,
+      content_tag(:div, raw(select_html_symbol(piece)), data: { 'piece-color' => piece_color(piece) }, class: 'contains-piece'),
+      class: square_color(row, col),
+      id: "square-#{row}-#{col}",
+    )
+  end
+
+  def render_empty_square(row, col)
+    content_tag(:td, '', class: square_color(row, col), id: "square-#{row}-#{col}")
   end
 end

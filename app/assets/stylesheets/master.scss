@@ -1,67 +1,93 @@
 .chessboard {
-  width: 690px;
-  height: 690px;
-  margin: 20px;
-  margin-left: 40px;
-  margin-bottom: 0px;
-  border: 25px solid #333;
+  font-size: 45px;
 }
-.left {
-  width: 40px;
-  height: 640px;
-  float: left;
-  margin-top: 55px;
-  margin-bottom: 45px;
-}
-.bottom {
-  width: 640px;
-  height: 40px;
-  float: top;
-  margin-left: 65px;
-  margin-right: 45px;
-  margin-top: 0px;
-  background-color: blue;
-}
+
 .black {
-  float: left;
-  width: 80px;
-  height: 80px;
   background-color: #999;
-  font-size:50px;
-  text-align:center;
-  display: table-cell;
-  vertical-align:middle;
+  height: 80px;
+  width: 80px;
+  border: 1px solid black;
 }
+
 .white {
-  float: left;
-  width: 80px;
-  height: 80px;
   background-color: #fff;
-  font-size:50px;
-  text-align:center;
-  display: table-cell;
-  vertical-align:middle;
+  height: 80px;
+  width: 80px;
+  border: 1px solid black;
 }
+
 .row {
-  clear: both;
-  float: left;
-  width: 40px;
   height: 80px;
-  background-color: #fff;
-  font-size:30px;
-  text-align:center;
-  display: table-cell;
-  vertical-align:middle;
-  // margin-left: 10px;
-  padding-left: 20px;
 }
-.col {
-  float: top;
+
+.coordinate {
+  background-color: #fff;
+  height: 80px;
   width: 80px;
-  height: 40px;
-  background-color: #fff;
-  font-size:30px;
-  text-align:center;
-  display: table-cell;
-  vertical-align:middle;
+  font-size: 30px;
 }
+
+// Once screen width gets small enough, we need to
+// Have smaller boxes so that the whole board can still be seen.
+@media (max-width: 550px) {
+  .chessboard {
+    font-size: 20px;
+  }
+
+  .black {
+    background-color: #999;
+    height: 50px;
+    width: 50px;
+    border: 1px solid black;
+  }
+
+  .white {
+    background-color: #fff;
+    height: 50px;
+    width: 50px;
+    border: 1px solid black;
+  }
+
+  .row {
+    height: 50px;
+  }
+
+  .coordinate {
+    background-color: #fff;
+    height: 50px;
+    width: 50px;
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 551px) and (max-height: 780px) {
+  .chessboard {
+    font-size: 20px;
+  }
+
+  .black {
+    background-color: #999;
+    height: 60px;
+    width: 60px;
+    border: 1px solid black;
+  }
+
+  .white {
+    background-color: #fff;
+    height: 60px;
+    width: 60px;
+    border: 1px solid black;
+  }
+
+  .row {
+    height: 60px;
+  }
+
+  .coordinate {
+    background-color: #fff;
+    height: 60px;
+    width: 60px;
+    font-size: 15px;
+  }
+}
+
