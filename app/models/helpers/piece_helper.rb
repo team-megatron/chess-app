@@ -59,6 +59,10 @@ module PieceHelper
     return false
   end
 
+  def has_same_piece_color(row_destination, col_destination)
+    return self.game.pieces.active.exists?(row: row_destination, column:col_destination, is_black: self.is_black)
+  end
+
   def record_move(row_destination, col_destination)
     # Record the game leveraging the relationship of piece->game->moves
     self.game.moves.create(
@@ -79,6 +83,6 @@ module PieceHelper
   def capture_piece(row_destination, col_destination)
     # Select opponent piece and set captured field to true
     piece = self.game.pieces.active.find_by(row: row_destination, column: col_destination, is_black: !self.is_black)
-    piece.update_attribute :captured, true
+    piece.update_attributes(captured: true)
   end
 end
