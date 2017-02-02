@@ -29,6 +29,14 @@ RSpec.describe King, type: :model do
 
       expect(king.valid_move?(7,5)).to eq false
     end
+
+    it 'should return true if the king can make a valid castle move' do
+      game = FactoryGirl.create(:game)
+      king = FactoryGirl.create(:king, game_id: game.id, row: 8, column: 5)
+      rook = FactoryGirl.create(:rook, game_id: game.id, row: 8, column: 1)
+
+      expect(king.valid_move?(8,1)).to eq true
+    end
   end
 
   describe "can_castle?()" do
