@@ -12,7 +12,7 @@
             <tr id="row-<%= row %>" class="row">
               <td class="coordinate"><%= row %></td>
               <% 1.upto(8).each do |col| %>
-                <% piece = @game.pieces.find_by(column: col, row: row, captured: false) %>
+                <% piece = @game.pieces.active.find_by(column: col, row: row) %>
                 <% unless piece %>
                   <%= render_empty_square(row, col) %>
                 <% else %>
