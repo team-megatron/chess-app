@@ -12,7 +12,7 @@
             <tr id="row-<%= row %>" class="row">
               <td class="coordinate"><%= row %></td>
               <% 1.upto(8).each do |col| %>
-                <% piece = @game.pieces.find_by(column: col, row: row) %>
+                <% piece = @game.pieces.find_by(column: col, row: row, captured: false) %>
                 <% unless piece %>
                   <%= render_empty_square(row, col) %>
                 <% else %>
@@ -47,23 +47,29 @@ $(function() {
     // FIXME: This function does not check for valid move.
     //        It does not update database.
     drop: function(event, ui){
+      // get selected piece's and square's attributes
       let piece_div = ui.draggable;
       let square_div = $(this);
-      console.log(square_div.children().data('piece-color'));
-      // remove any piece of different color in the square
-      if (square_div.text().length != 0 &&
-        square_div.children().data('piece-color') != piece_div.data('piece-color')) {
+      var piece_id = piece_div.attr('id');
+      var square_id = square_div.attr('id');
+      var square_info = square_id.split('-');
+
+      // try update the piece to the new location
+      $.post("/pieces/" + piece_id, {
+        _method: "PUT",
+        row: square_info[1],
+        column: square_info[2]
+      }).success(function(data) {
+        // upon successful move, clear the destination square
+        if (square_div.text().length != 0) {
           square_div.children().hide('slow');
           square_div.empty();
-      }
-
-      // reset the selected piece position relative to the square
-      piece_div.css({left: 0, top: 0});
-
-      // only add piece into square if empty
-      if (square_div.text().length == 0) {
+        }
+        // and add the piece in
         square_div.append(piece_div);
-      }
+      });
+      // reset the piece position relative to the square
+      piece_div.css({left: 0, top: 0});
     }
   });
 
