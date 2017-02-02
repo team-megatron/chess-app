@@ -4,6 +4,7 @@ FactoryGirl.define do
     row 1
     column 1
     is_black true
+    captured false
   end
 
   types = [:king, :queen, :rook, :knight, :bishop, :pawn]
