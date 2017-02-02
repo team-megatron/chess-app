@@ -10,14 +10,14 @@ class Piece < ActiveRecord::Base
   def valid_move?(row_destination, col_destination)
     # check if move to outside chessboard
     if row_destination < 1 || row_destination > 8 ||
-       col_destination < 1 || col_destination > 8
+       col_destination < 1 || col_destination > 8 ||
+       has_same_piece_color(row_destination, col_destination)
       return false
     end
     return true
   end
 
   def is_obstructed?(row_destination, col_destination)
-    return true if has_same_piece_color(row_destination, col_destination)
     return true if is_obstructed_horizontally?(row_destination, col_destination)
     return true if is_obstructed_vertically?(row_destination, col_destination)
     return true if is_obstructed_diagonally?(row_destination, col_destination)
