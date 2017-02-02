@@ -9,9 +9,9 @@ module PieceHelper
     end_column = col_destination + (incrementing ? -1 : 1)
 
     if incrementing
-      self.game.pieces.where(row: self.row, column: (start_column..end_column)).exists?
+      self.game.pieces.active.where(row: self.row, column: (start_column..end_column)).exists?
     else
-      self.game.pieces.where(row: self.row, column: (end_column..start_column)).exists?
+      self.game.pieces.active.where(row: self.row, column: (end_column..start_column)).exists?
     end
   end
 
@@ -25,9 +25,9 @@ module PieceHelper
     end_row = row_destination + (incrementing ? -1 : 1)
 
     if incrementing
-      self.game.pieces.where(column: self.column, row: (start_row..end_row)).exists?
+      self.game.pieces.active.where(column: self.column, row: (start_row..end_row)).exists?
     else
-      self.game.pieces.where(column: self.column, row: (end_row..start_row)).exists?
+      self.game.pieces.active.where(column: self.column, row: (end_row..start_row)).exists?
     end
   end
 
@@ -36,7 +36,7 @@ module PieceHelper
       return false
     end
 
-    pieces = self.game.pieces
+    pieces = self.game.pieces.active
 
     # Establish which x and y direction piece is moving
     row_increment = self.row < row_destination ? 1 : -1
