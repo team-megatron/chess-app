@@ -14,7 +14,12 @@ class King < Piece
     return false
   end
 
-  def can_castle?(target_rook)
+  def can_castle?(row_destination, col_destination)
+    # Determine if there is a rook at the end of the board
+    # Return false if there isn't
+    target_rook = self.game.pieces.active.find_by(row: row_destination, column: col_destination, type: 'Rook')
+    return false unless target_rook
+
     # Grab the current moves that have been made within a game.
     # Return false if either the king or rook have already moved.
     moves = self.game.moves
