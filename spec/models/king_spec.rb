@@ -62,4 +62,39 @@ RSpec.describe King, type: :model do
       expect(@king.can_castle? 8, 1).to eq false
     end
   end
+
+  describe "move_to()" do
+    before :each do
+      @game = FactoryGirl.create(:game)
+      @king = FactoryGirl.create(:king, game_id: @game.id, row: 8, column: 5)
+      @left_rook = FactoryGirl.create(:rook, game_id: @game.id, row: 8, column: 1)
+      @right_rook = FactoryGirl.create(:rook, game_id: @game.id, row: 8, column: 8)
+    end
+
+    it 'should call super if king is not castling' do
+      @king.move_to 8,4
+      @king.reload
+
+      expect(@king.row).to eq 8
+      expect(@king.column).to eq 4
+    end
+
+    it 'should move king two squares left and rook one square to its right' do
+      @king.move_to 8,1
+      @king.reload
+      @left_rook.reload
+
+      expect([@king.row, @king.column]).to eq [8,3]
+      expect([@left_rook.row, @left_rook.column]).to eq [8,4]
+    end
+
+    it 'should move king two squares right and rook one square to its left' do
+      @king.move_to 8,8
+      @king.reload
+      @right_rook.reload
+
+      expect([@king.row, @king.column]).to eq [8,7]
+      expect([@right_rook.row, @right_rook.column]).to eq [8,6]
+    end
+  end
 end
