@@ -1,7 +1,10 @@
 class Rook < Piece
 
   def valid_move?(row_destination, col_destination)
-    #first check for obstruction
+    # check if move to outside chessboard
+    return false if !super
+
+    #check for obstruction
     if is_obstructed?(row_destination, col_destination)
       return false
     end

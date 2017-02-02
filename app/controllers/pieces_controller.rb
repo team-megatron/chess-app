@@ -15,12 +15,9 @@ class PiecesController < ApplicationController
   end
 
   def update
-    if is_actual_move?(params[:row], params[:column])
+    if current_piece.valid_move?(params[:row].to_i, params[:column].to_i)
       current_piece.move_to(params[:row], params[:column])
-      redirect_to game_path(current_piece.game)
-    else
-      # This will need additional game logic to not switch turns if not a real move.
-      redirect_to game_path(current_piece.game)
+      render json: current_piece
     end
   end
 

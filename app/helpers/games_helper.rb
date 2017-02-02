@@ -23,7 +23,8 @@ module GamesHelper
   def render_piece_in_square(row, col, piece)
     content_tag(
       :td,
-      content_tag(:div, raw(select_html_symbol(piece)), data: { 'piece-color' => piece_color(piece) }, class: 'contains-piece'),
+      content_tag(:div, raw(select_html_symbol(piece)), data: { 'piece-color' => piece_color(piece) },
+      class: 'contains-piece', id: piece.id),
       class: square_color(row, col),
       id: "square-#{row}-#{col}",
     )

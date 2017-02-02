@@ -9,9 +9,9 @@ module PieceHelper
     end_column = col_destination + (incrementing ? -1 : 1)
 
     if incrementing
-      self.game.pieces.where(row: self.row, column: (start_column..end_column)).exists?
+      self.game.pieces.active.where(row: self.row, column: (start_column..end_column)).exists?
     else
-      self.game.pieces.where(row: self.row, column: (end_column..start_column)).exists?
+      self.game.pieces.active.where(row: self.row, column: (end_column..start_column)).exists?
     end
   end
 
@@ -25,9 +25,9 @@ module PieceHelper
     end_row = row_destination + (incrementing ? -1 : 1)
 
     if incrementing
-      self.game.pieces.where(column: self.column, row: (start_row..end_row)).exists?
+      self.game.pieces.active.where(column: self.column, row: (start_row..end_row)).exists?
     else
-      self.game.pieces.where(column: self.column, row: (end_row..start_row)).exists?
+      self.game.pieces.active.where(column: self.column, row: (end_row..start_row)).exists?
     end
   end
 
@@ -36,7 +36,7 @@ module PieceHelper
       return false
     end
 
-    pieces = self.game.pieces
+    pieces = self.game.pieces.active
 
     # Establish which x and y direction piece is moving
     row_increment = self.row < row_destination ? 1 : -1
@@ -59,6 +59,10 @@ module PieceHelper
     return false
   end
 
+  def has_same_piece_color(row_destination, col_destination)
+    return self.game.pieces.active.exists?(row: row_destination, column:col_destination, is_black: self.is_black)
+  end
+
   def record_move(row_destination, col_destination)
     # Record the game leveraging the relationship of piece->game->moves
     self.game.moves.create(
@@ -79,6 +83,6 @@ module PieceHelper
   def capture_piece(row_destination, col_destination)
     # Select opponent piece and set captured field to true
     piece = self.game.pieces.active.find_by(row: row_destination, column: col_destination, is_black: !self.is_black)
-    piece.update_attribute :captured, true
+    piece.update_attributes(captured: true)
   end
 end
