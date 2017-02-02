@@ -38,6 +38,8 @@ class King < Piece
   # If a king is not castling, call super
   def move_to(row_destination, col_destination)
     if can_castle?(row_destination, col_destination)
+      rook = self.game.pieces.active.find_by(row: row_destination, column: col_destination)
+
       # Determine if the king is castling left or right
       direction = col_destination > self.column ? 1 : -1
 
@@ -47,10 +49,13 @@ class King < Piece
 
       # Update the king and rook using these newly found columns
       self.update_attributes(column: king_column)
-      self.game.pieces.active.find_by(
-        row: row_destination,
-        column: col_destination
-      ).update_attributes(column: rook_column)
+      rook.update_attributes(column: rook_column)
+
+      # Record the moves. This will end up looking like two consecutive moves
+      # due to how table implementation. Nice to have would be a figuring out
+      # how to record this specifically as a castle move.
+      self.record_move(row_destination, king_column)
+      rook.record_move(row_destination, rook_column)
     else
       super
     end
