@@ -1,10 +1,12 @@
 class King < Piece
 
   def valid_move?(row_destination, col_destination)
+    # Check for possible castle move first to avoid failure due to
+    # has_same_piece_color? check.
+    return true if can_castle?(row_destination, col_destination)
+
     # check if move to outside chessboard
     return false if !super
-
-    return true if can_castle?(row_destination, col_destination)
 
     row_diff = (self.row - row_destination).abs
     col_diff = (self.column - col_destination).abs
