@@ -10,6 +10,11 @@ class Pawn < Piece
     start_row = self.is_black? ? 7 : 2
     direction = self.is_black ? 1 : -1
 
+    if valid_en_passant?(row_destination, col_destination)
+      capture_piece((row_destination + (1 * direction)), col_destination)
+      return true
+    end
+
     # Determine vertical and horizontal move distance
     row_distance = self.row - row_destination
     col_distance = self.column - col_destination
@@ -37,4 +42,36 @@ class Pawn < Piece
   def promote(new_type)
     self.update_attributes(type: new_type.downcase.capitalize)
   end
+  def same_row_ep?
+    correct_row = (self.is_black? ? 4 : 5)
+    correct_row == self.game.moves.last.end_row
+  end
+
+  def same_column_ep?(col_destination)
+    (self.game.moves.last.end_column - col_destination) == 0
+  end
+
+  def two_step_move?
+    (self.game.moves.last.start_row - self.game.moves.last.end_row).abs == 2
+  end
+
+  def last_move_is_a_pawn?
+    id = self.game.moves.last.piece_id
+    self.game.pieces.find_by(id: id).type == "Pawn"
+  end
+
+  def correct_direction(row_destination)
+    correct_direction = (self.is_black? ? 3 : 6)
+    correct_direction == row_destination
+  end
+
+  def is_first_move?
+    self.game.moves.empty?
+  end
+
+  def valid_en_passant?(row_destination, col_destination)
+    return false if is_first_move?
+    same_row_ep? && same_column_ep?(col_destination) && two_step_move? && last_move_is_a_pawn? && correct_direction(row_destination)
+  end
+
 end
