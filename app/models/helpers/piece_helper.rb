@@ -59,7 +59,7 @@ module PieceHelper
     return false
   end
 
-  def has_same_piece_color(row_destination, col_destination)
+  def has_same_piece_color?(row_destination, col_destination)
     return self.game.pieces.active.exists?(row: row_destination, column:col_destination, is_black: self.is_black)
   end
 
