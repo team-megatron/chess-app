@@ -28,4 +28,9 @@ class Pawn < Piece
     # If all other tests fail, assume false
     return false
   end
+
+  def is_promotable?
+    promotion_row = self.is_black? ? 1 : 8
+    return self.row == promotion_row
+  end
 end

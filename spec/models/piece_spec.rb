@@ -185,4 +185,41 @@ RSpec.describe Piece, type: :model do
       expect(moving_piece.capturable?(2,2)).to eq false
     end
   end
+
+  describe "is_promotable?" do
+    it "should return false if piece is not a pawn" do
+      game = FactoryGirl.create(:game)
+      rook = FactoryGirl.create(:rook, game_id: game.id)
+
+      expect(rook.is_promotable?).to eq false
+    end
+
+    it "should return false if piece is black pawn not on row 1" do
+      game = FactoryGirl.create(:game)
+      pawn = FactoryGirl.create(:pawn, game_id: game.id, row: 8)
+
+      expect(pawn.is_promotable?).to eq false
+    end
+
+    it "should return false if piece is white pawn not on row 8" do
+      game = FactoryGirl.create(:game)
+      pawn = FactoryGirl.create(:pawn, game_id: game.id, row: 1, is_black: false)
+
+      expect(pawn.is_promotable?).to eq false
+    end
+
+    it "should return true if piece is a black pawn on row 1" do
+      game = FactoryGirl.create(:game)
+      pawn = FactoryGirl.create(:pawn, game_id: game.id)
+
+      expect(pawn.is_promotable?).to eq true
+    end
+
+    it "should return true if piece is a white pawn on row 8" do
+      game = FactoryGirl.create(:game)
+      pawn = FactoryGirl.create(:pawn, game_id: game.id, row: 8, is_black: false)
+
+      expect(pawn.is_promotable?).to eq true
+    end
+  end
 end
