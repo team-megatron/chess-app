@@ -34,4 +34,8 @@ class Piece < ActiveRecord::Base
     self.record_move(row_destination, col_destination)
     self.update_attributes(column: col_destination, row: row_destination, is_selected: false)
   end
+
+  def is_promotable?
+    return false
+  end
 end
