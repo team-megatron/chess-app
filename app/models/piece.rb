@@ -11,7 +11,7 @@ class Piece < ActiveRecord::Base
     # check if move to outside chessboard
     if row_destination < 1 || row_destination > 8 ||
        col_destination < 1 || col_destination > 8 ||
-       has_same_piece_color(row_destination, col_destination)
+       has_same_piece_color?(row_destination, col_destination)
       return false
     end
     return true
