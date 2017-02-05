@@ -33,4 +33,8 @@ class Pawn < Piece
     promotion_row = self.is_black? ? 1 : 8
     return self.row == promotion_row
   end
+
+  def promote(new_type)
+    self.update_attributes(type: new_type.downcase.capitalize)
+  end
 end
