@@ -16,8 +16,11 @@ class PiecesController < ApplicationController
 
   def update
     if current_piece.valid_move?(params[:row].to_i, params[:column].to_i)
+      # Update the pieces row / column pair
       current_piece.move_to(params[:row], params[:column])
+      # Update the pieces type if it is promotable
       current_piece.promote(params[:new_type]) if current_piece.is_promotable?
+      # Return back the current_piece data to user
       render json: current_piece
     end
   end
