@@ -46,8 +46,8 @@ $(function() {
   $('.square').droppable({
     drop: function(event, ui){
       // get selected piece's and square's attributes
-      let piece_div = ui.draggable;
-      let square_div = $(this);
+      var piece_div = ui.draggable;
+      var square_div = $(this);
       var piece_id = piece_div.attr('id');
       var square_id = square_div.attr('id');
       var square_info = square_id.split('-');
