@@ -3,6 +3,7 @@ class Game < ActiveRecord::Base
   has_many :pieces
   belongs_to :white_player, class_name: 'Player'
   belongs_to :black_player, class_name: 'Player'
+  belongs_to :active_player, class_name: 'Player'
 
   def populate_game!
     8.times do |n|

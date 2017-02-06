@@ -25,8 +25,10 @@ class GamesController < ApplicationController
   def create
     @game = Game.create(game_params)
     if @game.valid?
-      @game.update_attributes(white_player_id: current_player.id)
+      @game.update_attributes(white_player_id: current_player.id,
+                              active_player_id: current_player.id)
       @game.populate_game!
+
       redirect_to game_path(@game)
     else
       render :new, status: :unprocessable_entity

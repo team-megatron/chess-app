@@ -24,7 +24,7 @@ module GamesHelper
     content_tag(
       :td,
       content_tag(:div, raw(select_html_symbol(piece)), data: { 'piece-color' => piece_color(piece) },
-      class: 'contains-piece', id: piece.id),
+      class: 'contains-piece', id: "piece-#{piece.id}"),
       class: square_color(row, col),
       id: "square-#{row}-#{col}",
     )
