@@ -44,8 +44,6 @@ $(function() {
 
   // handle the action of dropping a piece into a square
   $('.square').droppable({
-    // FIXME: This function does not check for valid move.
-    //        It does not update database.
     drop: function(event, ui){
       // get selected piece's and square's attributes
       let piece_div = ui.draggable;
