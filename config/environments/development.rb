@@ -1,8 +1,10 @@
 require 'pusher'
 
-Pusher.app_id = ENV['PUSHER_KEY_ID']
+Pusher.app_id = ENV['PUSHER_APP_ID']
 Pusher.key    = ENV['PUSHER_KEY']
 Pusher.secret = ENV['PUSHER_SECRET']
+Pusher.logger = Rails.logger
+Pusher.encrypted = true
 
 Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3030 }
