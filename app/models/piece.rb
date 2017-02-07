@@ -33,5 +33,8 @@ class Piece < ActiveRecord::Base
     # If all checks pass, record the move, update piece position, and deselect the peice.
     self.record_move(row_destination, col_destination)
     self.update_attributes(column: col_destination, row: row_destination, is_selected: false)
+    move = {:type => 'normal',
+            :piece => {:id => self.id, :end_row => row_destination, :end_column => col_destination}}
+    return move
   end
 end

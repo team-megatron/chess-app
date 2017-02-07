@@ -24,7 +24,7 @@ class PiecesController < ApplicationController
       # save old position before moving
       old_row = current_piece.row
       old_column = current_piece.column
-      current_piece.move_to(params[:row], params[:column])
+      move = current_piece.move_to(params[:row].to_i, params[:column].to_i)
 
       # swap active player
       if current_piece.game.active_player == current_piece.game.white_player
@@ -35,12 +35,7 @@ class PiecesController < ApplicationController
 
       # inform of successful move
       channel_name = 'game_channel_' + current_piece.game.id.to_s
-      puts channel_name
-      Pusher['game_channel_' + current_piece.game.id.to_s].trigger('move', {
-        :old_row => old_row, :old_column => old_row,
-        :new_row => params[:row], :new_column => params[:column],
-        :piece_id => current_piece.id
-      })
+      Pusher['game_channel_' + current_piece.game.id.to_s].trigger(move[:type], move)
       render json: current_piece
     else
       render json: {}

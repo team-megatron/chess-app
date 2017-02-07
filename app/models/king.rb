@@ -58,8 +58,12 @@ class King < Piece
       # how to record this specifically as a castle move.
       self.record_move(row_destination, king_column)
       rook.record_move(row_destination, rook_column)
+      move = {:type => 'castling',
+              :king => {:id => self.id, :end_row => self.row, :end_column => king_column},
+              :rook => {:id => rook.id, :end_row => rook.row, :end_column => rook_column} }
+      return move
     else
-      super
+      return super
     end
   end
 end
