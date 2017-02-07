@@ -83,7 +83,6 @@ $(function() {
   var channel = pusher.subscribe('game_channel_' + game_id);
 
   channel.bind('normal', function(data) {
-    console.log(data);
     var new_square_id = '#square-' + data.piece.end_row + '-' + data.piece.end_column;
     var piece_id = '#piece-' + data.piece.id;
     var new_square_div = $(new_square_id);
@@ -98,20 +97,23 @@ $(function() {
   });
 
   channel.bind('castling', function(data) {
-    console.log(data);
     var new_square_id = '#square-' + data.king.end_row + '-' + data.king.end_column;
     var king_id = '#piece-' + data.king.id;
     var new_square_div = $(new_square_id);
     var king_div = $(king_id);
     new_square_div.append(king_div);
-    new_square_div.children().show('slow');
+    new_square_div.children().show();
 
     new_square_id = '#square-' + data.rook.end_row + '-' + data.rook.end_column;
     var rook_id = '#piece-' + data.rook.id;
     new_square_div = $(new_square_id);
     var rook_div = $(rook_id);
     new_square_div.append(rook_div);
-    new_square_div.children().show('slow');
+    new_square_div.children().show();
+  });
+
+  channel.bind('refresh', function(data) {
+    location.reload()
   });
 });
 </script>

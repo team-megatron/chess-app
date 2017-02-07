@@ -33,9 +33,9 @@ class PiecesController < ApplicationController
         current_piece.game.update_attributes(active_player: current_piece.game.white_player)
       end
 
-      # inform of successful move
+      # inform of successful move and update front end
       channel_name = 'game_channel_' + current_piece.game.id.to_s
-      Pusher['game_channel_' + current_piece.game.id.to_s].trigger(move[:type], move)
+      Pusher[channel_name].trigger(move[:type], move)
       render json: current_piece
     else
       render json: {}

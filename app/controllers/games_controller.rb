@@ -39,6 +39,10 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     @game.reset_game!
     @game.update_attributes(active_player: @game.white_player)
+
+    # refresh the page on local and remote client
+    channel_name = 'game_channel_' + @game.id.to_s
+    Pusher[channel_name].trigger('refresh', {})
     redirect_to game_path(@game)
   end
 
