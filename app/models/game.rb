@@ -32,6 +32,46 @@ class Game < ActiveRecord::Base
     self.pieces.create(type: 'King', row: 8, is_black: true, captured: false, column: 5)
   end
 
+  # reset game to the initial positions and state
+  def reset_game!
+    white_pawns = self.pieces.where(type: 'Pawn', is_black: false)
+    black_pawns = self.pieces.where(type: 'Pawn', is_black: true)
+    white_rooks = self.pieces.where(type: 'Rook', is_black: false)
+    black_rooks = self.pieces.where(type: 'Rook', is_black: true)
+    white_knights = self.pieces.where(type: 'Knight', is_black: false)
+    black_knights = self.pieces.where(type: 'Knight', is_black: true)
+    white_bishops = self.pieces.where(type: 'Bishop', is_black: false)
+    black_bishops = self.pieces.where(type: 'Bishop', is_black: true)
+    white_queen = self.pieces.where(type: 'Queen', is_black: false).first
+    black_queen = self.pieces.where(type: 'Queen', is_black: true).first
+    white_king = self.pieces.where(type: 'King', is_black: false).first
+    black_king = self.pieces.where(type: 'King', is_black: true).first
+
+    8.times do |i|
+      white_pawns[i].update_attributes(row: 2, column: i+1, captured: false)
+      black_pawns[i].update_attributes(row: 7, column: i+1, captured: false)
+    end
+    [1,8].each.with_index do |n, i|
+      white_rooks[i].update_attributes(row: 1, column: n,captured: false)
+      black_rooks[i].update_attributes(row: 8, column: n, captured: false)
+    end
+    [2,7].each.with_index do |n, i|
+      white_knights[i].update_attributes(row: 1, column: n,captured: false)
+      black_knights[i].update_attributes(row: 8, column: n, captured: false)
+    end
+    [3,6].each.with_index do |n, i|
+      white_bishops[i].update_attributes(row: 1, column: n,captured: false)
+      black_bishops[i].update_attributes(row: 8, column: n, captured: false)
+    end
+    white_queen.update_attributes(row: 1, column: 4, captured: false)
+    black_queen.update_attributes(row: 8, column: 4, captured: false)
+    white_king.update_attributes(row: 1, column: 5, captured: false)
+    black_king.update_attributes(row: 8, column: 5, captured: false)
+
+    # clear all previous moves
+    self.moves.delete_all
+  end
+
   # Determine if a player is currently in check.
   # Expects a boolean value to represent whos turn it currently is
   # true = black, white = false

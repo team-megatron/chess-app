@@ -35,6 +35,13 @@ class GamesController < ApplicationController
     end
   end
 
+  def reset
+    @game = Game.find(params[:id])
+    @game.reset_game!
+    @game.update_attributes(active_player: @game.white_player)
+    redirect_to game_path(@game)
+  end
+
   private
 
   helper_method :white_player_email, :black_player_email, :is_open?
