@@ -24,8 +24,11 @@ class PiecesController < ApplicationController
       # save old position before moving
       old_row = current_piece.row
       old_column = current_piece.column
+      # Update the pieces row / column pair
       current_piece.move_to(params[:row], params[:column])
-
+      # Update the pieces type if it is promotable
+      current_piece.promote(params[:new_type]) if current_piece.is_promotable?
+      
       # swap active player
       if current_piece.game.active_player == current_piece.game.white_player
         current_piece.game.update_attributes(active_player: current_piece.game.black_player)
@@ -41,6 +44,7 @@ class PiecesController < ApplicationController
         :new_row => params[:row], :new_column => params[:column],
         :piece_id => current_piece.id
       })
+      # Return back the current_piece data to user
       render json: current_piece
     else
       render json: {}
