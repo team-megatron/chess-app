@@ -28,9 +28,10 @@ class Piece < ActiveRecord::Base
   # and capture if appropriate.
   def move_to(row_destination, col_destination)
     # Capture piece located at target location if exists
+
     capture_piece(row_destination, col_destination) if capturable?(row_destination, col_destination)
 
-    # If all checks pass, record the move, update piece position, and deselect the peice.
+    # If all checks pass, record the move, update piece position, and deselect the piece.
     self.record_move(row_destination, col_destination)
     self.update_attributes(column: col_destination, row: row_destination, is_selected: false)
   end
