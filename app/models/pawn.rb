@@ -34,6 +34,8 @@ class Pawn < Piece
     return false
   end
 
+
+  
   def is_promotable?
     promotion_row = self.is_black? ? 1 : 8
     return self.row == promotion_row
@@ -42,24 +44,30 @@ class Pawn < Piece
   def promote(new_type)
     self.update_attributes(type: new_type.downcase.capitalize)
   end
-  def same_row_ep?
-    correct_row = (self.is_black? ? 4 : 5)
-    correct_row == self.game.moves.last.end_row
+  
+  #checks for correct row to make en passant
+  def same_row_for_ep?
+    correct_starting_row = (self.is_black ? 4 : 5)
+    correct_starting_row == self.row && correct_starting_row == self.game.moves.last.end_row 
   end
 
-  def same_column_ep?(col_destination)
+  #checks the intended column is correct for en passants
+  def same_column_for_ep?(col_destination)
     (self.game.moves.last.end_column - col_destination) == 0
   end
 
+  #checks the last move is two steps
   def two_step_move?
     (self.game.moves.last.start_row - self.game.moves.last.end_row).abs == 2
   end
-
+  
+  #checks the last piece is a pawn
   def last_move_is_a_pawn?
     id = self.game.moves.last.piece_id
     self.game.pieces.find_by(id: id).type == "Pawn"
   end
 
+  #checks that the pawn is moving in the right direction
   def correct_direction(row_destination)
     correct_direction = (self.is_black? ? 3 : 6)
     correct_direction == row_destination
@@ -71,7 +79,7 @@ class Pawn < Piece
 
   def valid_en_passant?(row_destination, col_destination)
     return false if is_first_move?
-    same_row_ep? && same_column_ep?(col_destination) && two_step_move? && last_move_is_a_pawn? && correct_direction(row_destination)
+    same_row_for_ep? && same_column_for_ep?(col_destination) && two_step_move? && last_move_is_a_pawn? && correct_direction(row_destination)
   end
 
 end
