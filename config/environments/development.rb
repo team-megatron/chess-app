@@ -1,3 +1,11 @@
+require 'pusher'
+
+Pusher.app_id = ENV['PUSHER_APP_ID']
+Pusher.key    = ENV['PUSHER_KEY']
+Pusher.secret = ENV['PUSHER_SECRET']
+Pusher.logger = Rails.logger
+Pusher.encrypted = true
+
 Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'localhost', port: 3030 }
   # Settings specified here will take precedence over those in config/application.rb.
@@ -35,4 +43,8 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Enable more than one request
+  config.allow_concurrency = true
+
 end
