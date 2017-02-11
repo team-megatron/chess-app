@@ -26,6 +26,9 @@ class PiecesController < ApplicationController
       old_column = current_piece.column
       move = current_piece.move_to(params[:row].to_i, params[:column].to_i)
 
+      # Update the pieces type if it is promotable
+      current_piece.promote(params[:new_type]) if current_piece.is_promotable?
+
       # swap active player
       if current_piece.game.active_player == current_piece.game.white_player
         current_piece.game.update_attributes(active_player: current_piece.game.black_player)
@@ -36,6 +39,7 @@ class PiecesController < ApplicationController
       # inform of successful move and update front end
       channel_name = 'game_channel_' + current_piece.game.id.to_s
       Pusher[channel_name].trigger(move[:type], move)
+
       render json: current_piece
     else
       render json: {}

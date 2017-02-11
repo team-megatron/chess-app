@@ -52,12 +52,10 @@ $(function() {
 
   // handle the action of dropping a piece into a square
   $('.square').droppable({
-    // FIXME: This function does not check for valid move.
-    //        It does not update database.
     drop: function(event, ui){
-      // get selected piece's and square's attributes, and current player id
-      let piece_div = ui.draggable;
-      let square_div = $(this);
+      // get selected piece's and square's attributes
+      var piece_div = ui.draggable;
+      var square_div = $(this);
       var piece_id = piece_div.attr('id');
       var piece_info = piece_id.split('-');
       var square_id = square_div.attr('id');
