@@ -49,15 +49,16 @@ class King < Piece
       king_column = self.column + (2 * direction)
       rook_column = king_column + (1 * (direction * -1))
 
-      # Update the king and rook using these newly found columns
-      self.update_attributes(column: king_column)
-      rook.update_attributes(column: rook_column)
-
       # Record the moves. This will end up looking like two consecutive moves
       # due to how table implementation. Nice to have would be a figuring out
       # how to record this specifically as a castle move.
       self.record_move(row_destination, king_column)
       rook.record_move(row_destination, rook_column)
+
+      # Update the king and rook using these newly found columns
+      self.update_attributes(column: king_column)
+      rook.update_attributes(column: rook_column)
+
       move = {:type => 'castling',
               :king => {:id => self.id, :end_row => self.row, :end_column => king_column},
               :rook => {:id => rook.id, :end_row => rook.row, :end_column => rook_column} }
