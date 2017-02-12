@@ -3,8 +3,6 @@ Rails.application.routes.draw do
   root 'static_pages#index'
   resources :games, :pieces
 
-  # for development purpose
-  post 'games/:id/reset', to: 'games#reset', as: 'reset_game'
   post 'games/:id/undo', to: 'games#undo', as: 'undo_move'
 
   # The priority is based upon order of creation: first created -> highest priority.

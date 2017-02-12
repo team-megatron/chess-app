@@ -31,12 +31,6 @@
         </table>
 
         <div>
-          <%= form_tag reset_game_path, method: :post do %>
-            <%= submit_tag 'Reset Game' %>
-          <% end %>
-        </div>
-        <br />
-        <div>
           <%= form_tag undo_move_path, method: :post do %>
             <%= submit_tag 'Undo Last Move' %>
           <% end %>
