@@ -77,8 +77,15 @@ class Game < ActiveRecord::Base
     piece = Piece.find(last_move.piece_id)
     piece.update_attributes(column: last_move.start_column, row: last_move.start_row)
     # TODO: check if captured a piece needs to be reinstated
-    move = {:type => 'normal',
-            :piece => {:id => piece.id, :end_row => last_move.start_row, :end_column => last_move.start_column}}
+    if last_move.captured_piece_id.nil?
+      move = {:type => 'normal',
+              :piece => {:id => piece.id, :end_row => last_move.start_row, :end_column => last_move.start_column}}
+    else
+      captured_piece = Piece.find_by_id(last_move.captured_piece_id)
+      captured_piece.update_attributes(captured: false)
+      move = {:type => 'refresh'}
+    end
+
     last_move.destroy
     return move
   end

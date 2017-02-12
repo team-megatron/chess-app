@@ -29,10 +29,15 @@ class Piece < ActiveRecord::Base
   def move_to(row_destination, col_destination)
     # Capture piece located at target location if exists
 
-    capture_piece(row_destination, col_destination) if capturable?(row_destination, col_destination)
-
+    if capturable?(row_destination, col_destination)
+      captured_piece = capture_piece(row_destination, col_destination)
+    end
     # If all checks pass, record the move, update piece position, and deselect the piece.
     self.record_move(row_destination, col_destination)
+    if !captured_piece.nil?
+      last_move = self.game.moves.last
+      last_move.update_attributes(captured_piece_id: captured_piece.id)
+    end
     self.update_attributes(column: col_destination, row: row_destination, is_selected: false)
     move = {:type => 'normal',
             :piece => {:id => self.id, :end_row => row_destination, :end_column => col_destination}}
