@@ -32,6 +32,24 @@ class Game < ActiveRecord::Base
     self.pieces.create(type: 'King', row: 8, is_black: true, captured: false, column: 5)
   end
 
+  def undo_last_move!
+    last_move = self.moves.last
+    piece = Piece.find(last_move.piece_id)
+    piece.update_attributes(column: last_move.start_column, row: last_move.start_row)
+    # TODO: check if captured a piece needs to be reinstated
+    if last_move.captured_piece_id.nil?
+      move = {:type => 'normal',
+              :piece => {:id => piece.id, :end_row => last_move.start_row, :end_column => last_move.start_column}}
+    else
+      captured_piece = Piece.find_by_id(last_move.captured_piece_id)
+      captured_piece.update_attributes(captured: false)
+      move = {:type => 'refresh'}
+    end
+
+    last_move.destroy
+    return move
+  end
+
   # Determine if a player is currently in check.
   # Expects a boolean value to represent whos turn it currently is
   # true = black, white = false

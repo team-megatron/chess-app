@@ -18,14 +18,17 @@ class PiecesController < ApplicationController
     # check if current_player can make the move
     # or selects the right piece color
     # or the move is valid
+    if current_piece.game.white_player.blank? || current_piece.game.black_player.blank?
+      return render text: 'Need two players to play. One player is missing', status: :forbidden
+    end
+
     if (current_player.id == active_player.id &&
         current_piece.is_black == (active_player.id == black_player.id) &&
         current_piece.valid_move?(params[:row].to_i, params[:column].to_i))
       # save old position before moving
       old_row = current_piece.row
       old_column = current_piece.column
-      # Update the pieces row / column pair
-      current_piece.move_to(params[:row], params[:column])
+      move = current_piece.move_to(params[:row].to_i, params[:column].to_i)
 
       # Update the pieces type if it is promotable
       current_piece.promote(params[:new_type]) if current_piece.is_promotable?
@@ -37,14 +40,10 @@ class PiecesController < ApplicationController
         current_piece.game.update_attributes(active_player: current_piece.game.white_player)
       end
 
-      # inform of successful move
+      # inform of successful move and update front end
       channel_name = 'game_channel_' + current_piece.game.id.to_s
-      Pusher['game_channel_' + current_piece.game.id.to_s].trigger('move', {
-        :old_row => old_row, :old_column => old_row,
-        :new_row => params[:row], :new_column => params[:column],
-        :piece_id => current_piece.id
-      })
-      # Return back the current_piece data to user
+      Pusher[channel_name].trigger(move[:type], move)
+
       render json: current_piece
     else
       render json: {}

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170206123255) do
+ActiveRecord::Schema.define(version: 20170212130804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 20170206123255) do
     t.integer  "start_column"
     t.integer  "end_row"
     t.integer  "end_column"
+    t.integer  "captured_piece_id"
   end
 
   add_index "moves", ["game_id"], name: "index_moves_on_game_id", using: :btree

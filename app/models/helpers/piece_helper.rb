@@ -82,7 +82,8 @@ module PieceHelper
 
   def capture_piece(row_destination, col_destination)
     # Select opponent piece and set captured field to true
-    piece = self.game.pieces.active.find_by(row: row_destination, column: col_destination, is_black: !self.is_black)
-    piece.update_attributes(captured: true)
+    captured_piece = self.game.pieces.active.find_by(row: row_destination, column: col_destination, is_black: !self.is_black)
+    captured_piece.update_attributes(captured: true)
+    return captured_piece
   end
 end
