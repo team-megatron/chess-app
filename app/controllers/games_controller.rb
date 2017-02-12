@@ -6,7 +6,7 @@ class GamesController < ApplicationController
   end
 
   def show
-    @game = Game.find_by_id(params[:id])
+    @game = current_game
     return render_not_found if @game.blank?
   end
 
@@ -15,11 +15,10 @@ class GamesController < ApplicationController
   end
 
   def update
-    @game = Game.find(params[:id])
-    @game.update_attributes(game_params)
+    current_game.update_attributes(game_params)
     # shoud redirect to game#show
     # for now redirect to games#index
-    redirect_to games_path
+    redirect_to games_path(current_game)
   end
 
   def create
@@ -36,19 +35,37 @@ class GamesController < ApplicationController
   end
 
   def reset
-    @game = Game.find(params[:id])
-    @game.reset_game!
-    @game.update_attributes(active_player: @game.white_player)
+    if can_play?(current_player)
+      current_game.reset_game!
+      current_game.update_attributes(active_player: current_game.white_player)
 
-    # refresh the page on local and remote client
-    channel_name = 'game_channel_' + @game.id.to_s
-    Pusher[channel_name].trigger('refresh', {})
-    redirect_to game_path(@game)
+      # refresh the page on local and remote client
+      channel_name = 'game_channel_' + current_game.id.to_s
+      Pusher[channel_name].trigger('refresh', {})
+      redirect_to game_path(current_game)
+    end
+  end
+
+  def undo
+    # undo last move
+    while can_play?(current_player) && (current_game.moves.last&.is_black == is_black?(current_player))
+      undone_move = current_game.undo_last_move!
+      current_game.update_attributes(active_player: current_player)
+
+      # refresh the page on local and remote client
+      channel_name = 'game_channel_' + current_game.id.to_s
+      Pusher[channel_name].trigger(undone_move[:type], undone_move)
+    end
+    redirect_to game_path(current_game)
   end
 
   private
 
   helper_method :white_player_email, :black_player_email, :is_open?
+
+  def current_game
+    @current_game ||= Game.find_by_id(params[:id])
+  end
 
   def white_player_email(game)
     if game.white_player.present?
@@ -68,6 +85,14 @@ class GamesController < ApplicationController
 
   def is_open?(game)
     game.black_player.blank?
+  end
+
+  def can_play?(player)
+    return player == current_game.white_player || player == current_game.black_player
+  end
+
+  def is_black?(player)
+    return player == current_game.black_player
   end
 
   def game_params

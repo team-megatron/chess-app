@@ -72,6 +72,17 @@ class Game < ActiveRecord::Base
     self.moves.delete_all
   end
 
+  def undo_last_move!
+    last_move = self.moves.last
+    piece = Piece.find(last_move.piece_id)
+    piece.update_attributes(column: last_move.start_column, row: last_move.start_row)
+    # TODO: check if captured a piece needs to be reinstated
+    move = {:type => 'normal',
+            :piece => {:id => piece.id, :end_row => last_move.start_row, :end_column => last_move.start_column}}
+    last_move.destroy
+    return move
+  end
+
   # Determine if a player is currently in check.
   # Expects a boolean value to represent whos turn it currently is
   # true = black, white = false

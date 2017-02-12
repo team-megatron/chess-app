@@ -35,6 +35,12 @@
             <%= submit_tag 'Reset Game' %>
           <% end %>
         </div>
+        <br />
+        <div>
+          <%= form_tag undo_move_path, method: :post do %>
+            <%= submit_tag 'Undo Last Move' %>
+          <% end %>
+        </div>
       </div>
     </div>
   </body>

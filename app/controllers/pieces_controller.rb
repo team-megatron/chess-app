@@ -18,6 +18,10 @@ class PiecesController < ApplicationController
     # check if current_player can make the move
     # or selects the right piece color
     # or the move is valid
+    if current_piece.game.white_player.blank? || current_piece.game.black_player.blank?
+      return render text: 'Need two players to play. One player is missing', status: :forbidden
+    end
+
     if (current_player.id == active_player.id &&
         current_piece.is_black == (active_player.id == black_player.id) &&
         current_piece.valid_move?(params[:row].to_i, params[:column].to_i))
