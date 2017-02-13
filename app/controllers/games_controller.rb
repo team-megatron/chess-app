@@ -34,27 +34,26 @@ class GamesController < ApplicationController
     end
   end
 
-  def reset
-    if can_play?(current_player)
-      current_game.reset_game!
-      current_game.update_attributes(active_player: current_game.white_player)
-
-      # refresh the page on local and remote client
-      channel_name = 'game_channel_' + current_game.id.to_s
-      Pusher[channel_name].trigger('refresh', {})
-      redirect_to game_path(current_game)
-    end
-  end
-
   def undo
-    # undo last move
-    while can_play?(current_player) && (current_game.moves.last&.is_black == is_black?(current_player))
-      undone_move = current_game.undo_last_move!
-      current_game.update_attributes(active_player: current_player)
+    channel_name = 'game_channel_' + current_game.id.to_s
+    if !can_play?(current_player)
+      Pusher[channel_name].trigger("alert-#{current_player.id}",
+                                  'Only participating players can undo')
+    elsif current_game.moves.last&.is_black != is_black?(current_player)
+      Pusher[channel_name].trigger("alert-#{current_player.id}",
+                                   'Cannot undo last move made by your opponent.')
+    else
+      # undo last move
+      while (current_game.moves.last&.is_black == is_black?(current_player))
+        undone_move = current_game.undo_last_move!
+        current_game.update_attributes(active_player: current_player)
 
-      # refresh the page on local and remote client
-      channel_name = 'game_channel_' + current_game.id.to_s
-      Pusher[channel_name].trigger(undone_move[:type], undone_move)
+        # refresh the page on local and remote client
+        channel_name = 'game_channel_' + current_game.id.to_s
+        Pusher[channel_name].trigger(undone_move[:type], undone_move)
+      end
+      Pusher[channel_name].trigger("alert-#{current_opponent.id}",
+                                   'Your opponent cancelled their last move. Now their turn to play again')
     end
     redirect_to game_path(current_game)
   end
@@ -93,6 +92,13 @@ class GamesController < ApplicationController
 
   def is_black?(player)
     return player == current_game.black_player
+  end
+
+  def current_opponent
+    if current_game.white_player != current_player
+      return current_game.white_player
+    end
+    return current_game.black_player
   end
 
   def game_params
