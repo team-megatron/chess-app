@@ -6,6 +6,7 @@ class Piece < ActiveRecord::Base
   include PieceHelper
 
   belongs_to :game
+  has_many :moves
 
   def valid_move?(row_destination, col_destination)
     # check if move to outside chessboard

@@ -53,4 +53,36 @@ class Game < ActiveRecord::Base
     # king
     return false
   end
+  
+  # returns true if any piece in this game has move to the same location 3 times
+  def draw?
+    #for every game scan through each active piece
+    all_active_pieces = self.pieces.active
+      
+    all_active_pieces.each do |active_piece|
+      counts = location_counts(active_piece)
+      counts.each_pair do |key, value|
+        if value >= 3
+          return true
+        end
+      end
+    end
+    return false
+  end
+  
+  def location_counts(piece)
+    #returns a hash table of all the places the piece has been and how many times it has been there
+    counts = Hash.new
+    
+    piece.moves.each do |move|
+      key = "#{move.end_row}, #{move.end_column}"
+      counts[key]
+      if counts[key] == nil
+        counts[key] = 1
+      else
+        counts[key] += 1
+      end
+    end
+    return counts
+  end
 end
