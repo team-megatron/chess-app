@@ -68,4 +68,38 @@ RSpec.describe Game, type: :model do
       expect(game.player_in_check?(king.is_black?)).to eq false
     end
   end
+  
+  describe "draw?" do
+    it "should return true if a piece moves to the same position 3 times" do
+      game = FactoryGirl.create(:game)
+      black_queen = FactoryGirl.create(:queen, game_id: game.id, row: 8, column: 4, is_black: true)
+      white_bishop =FactoryGirl.create(:bishop, game_id: game.id, row: 1, column: 3, is_black: false)
+      
+      black_queen.move_to(6,4)
+      white_bishop.move_to(3,1)
+      black_queen.move_to(6,6)
+      white_bishop.move_to(2,2)
+      black_queen.move_to(6,4)
+      white_bishop.move_to(5,5)
+      black_queen.move_to(1,4)
+      white_bishop.move_to(7,7)
+      black_queen.move_to(6,4)
+      
+      expect(game.draw?).to eq true
+      
+    end
+    
+    describe "location_counts(piece)" do
+      it "should return a hash table with a key of locations and value of times visited" do
+        game = FactoryGirl.create(:game)
+        black_queen = FactoryGirl.create(:queen, game_id: game.id, row: 8, column: 4, is_black: true)
+        
+        black_queen.move_to(4,4)
+        black_queen.move_to(1,1)
+        black_queen.move_to(4,4)
+        
+        expect(game.location_counts(black_queen)).to have_key("4,4") 
+      end
+    end
+  end
 end
