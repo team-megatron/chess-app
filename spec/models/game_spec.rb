@@ -98,7 +98,7 @@ RSpec.describe Game, type: :model do
         black_queen.move_to(1,1)
         black_queen.move_to(4,4)
         
-        expect(game.location_counts(black_queen)).to be {"4, 4"=>2, "1, 1"=>1} 
+        expect(game.location_counts(black_queen)).to  eq({"4, 4"=>2, "1, 1"=>1}) 
       end
     end
   end
