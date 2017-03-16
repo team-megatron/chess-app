@@ -18,13 +18,20 @@ class PiecesController < ApplicationController
     # check if current_player can make the move
     # or selects the right piece color
     # or the move is valid
+    channel_name = 'game_channel_' + current_piece.game.id.to_s
     if current_piece.game.white_player.blank? || current_piece.game.black_player.blank?
-      return render text: 'Need two players to play. One player is missing', status: :forbidden
-    end
-
-    if (current_player.id == active_player.id &&
-        current_piece.is_black == (active_player.id == black_player.id) &&
-        current_piece.valid_move?(params[:row].to_i, params[:column].to_i))
+      Pusher[channel_name].trigger("alert-#{current_player.id}", 'Need two players to play')
+      render json: {}
+    elsif current_player.id != active_player.id
+      Pusher[channel_name].trigger("alert-#{current_player.id}", 'It\'s not your turn to play.')
+      render json: {}
+    elsif current_piece.is_black != (active_player.id == black_player.id)
+      Pusher[channel_name].trigger("alert-#{current_player.id}", 'You select the wrong piece color.')
+      render json: {}
+    elsif !current_piece.valid_move?(params[:row].to_i, params[:column].to_i)
+      Pusher[channel_name].trigger("alert-#{current_player.id}", "That's not a valid move for #{current_piece.type}")
+      render json: {}
+    else
       # save old position before moving
       old_row = current_piece.row
       old_column = current_piece.column
@@ -41,12 +48,8 @@ class PiecesController < ApplicationController
       end
 
       # inform of successful move and update front end
-      channel_name = 'game_channel_' + current_piece.game.id.to_s
       Pusher[channel_name].trigger(move[:type], move)
-
       render json: current_piece
-    else
-      render json: {}
     end
   end
 
